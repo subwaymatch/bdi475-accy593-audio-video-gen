@@ -1,0 +1,10 @@
+{
+  "name": "bdi475-accy593-semester-song",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.9.47 preview",
+    "check": "npx --yes hyperframes@0.9.47 check",
+    "render": "npx --yes hyperframes@0.9.47 render -o ../out/good-luck-everyone.mp4"
+  }
+}

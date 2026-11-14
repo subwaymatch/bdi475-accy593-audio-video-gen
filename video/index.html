@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semester Around the World — BDI 475 · ACCY 593</title>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/lottie_svg.min.js"></script>
+    <script src="assets/emoji/emoji-data.js"></script>
+    <script src="timeline.js"></script>
+    <style>
+      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Noto Sans SC"; src: url("assets/fonts/NotoSansSC.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Noto Sans KR"; src: url("assets/fonts/NotoSansKR.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Noto Sans Devanagari"; src: url("assets/fonts/NotoSansDevanagari.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Noto Sans Arabic"; src: url("assets/fonts/NotoSansArabic.woff2") format("woff2"); font-weight: 100 900; }
+
+      :root {
+        --ground: #07061a;
+        --ink: #ffffff;
+        --violet: #5b3bff;
+        --purple: #a33ed9;
+        --magenta: #d946af;
+        --coral: #fe4764;
+        --orange: #ff9a4a;
+        --font-ui: "Inter", "Noto Sans SC", "Noto Sans KR", "Noto Sans Devanagari", "Noto Sans Arabic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --font-display: var(--font-ui);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root {
+        position: relative; width: 1920px; height: 1080px; overflow: hidden;
+        background: radial-gradient(ellipse 80% 70% at 50% 45%, #150f33 0%, #0d0a24 55%, var(--ground) 100%);
+        color: var(--ink); font-family: var(--font-display);
+      }
+      .layer { position: absolute; inset: 0; pointer-events: none; }
+
+      /* ---- background ---- */
+      .blob { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; opacity: 0.14; mix-blend-mode: screen; }
+      .shape { position: absolute; border-radius: 28%; opacity: 0.05; }
+      .ring { position: absolute; left: 960px; top: 410px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
+        border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); opacity: 0; }
+      .confetto { position: absolute; left: 0; top: 0; width: 18px; height: 10px; border-radius: 3px; opacity: 0; }
+      .confetto.round { width: 14px; height: 14px; border-radius: 50%; }
+
+      /* ---- logo & title ---- */
+      #logoWrap { position: absolute; left: 640px; top: 90px; width: 640px; height: 314px; transform-origin: 0 0; }
+      #logoPulse { width: 100%; height: 100%; }
+      #logo { width: 100%; height: 100%; display: block; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.35)); }
+      #title { position: absolute; top: 440px; width: 1920px; text-align: center; font-family: var(--font-ui);
+        font-weight: 500; font-size: 38px; letter-spacing: -0.012em; color: #ffd9c2; opacity: 0; }
+
+      /* ---- lyric lines ---- */
+      .line { position: absolute; left: 0; width: 1920px; display: flex; flex-direction: column; align-items: center; opacity: 0; visibility: hidden; }
+      /* Language label above the lyric: plain text, no pill. */
+      .chip { display: inline-flex; align-items: baseline; gap: 12px; white-space: nowrap; color: var(--accent);
+        font-family: var(--font-ui); font-weight: 600; font-size: 30px; letter-spacing: -0.012em; }
+      .chip .sep { opacity: 0.55; }
+      .chip .native { font-weight: 500; letter-spacing: 0; opacity: 0.8; }
+      .content { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
+      .lyric { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 0.26em; row-gap: 0.02em;
+        max-width: 1500px; line-height: 1.25; font-weight: 700; text-align: center;
+        text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45); }
+      .lyric .w { display: inline-block; white-space: nowrap; }
+      .lyric .c { display: inline-block; }
+      .lyric.tight { column-gap: 0; }
+      .f-en { font-family: "Inter", sans-serif; letter-spacing: -0.028em; font-weight: 600; }
+      .f-latin { font-family: "Inter", sans-serif; letter-spacing: -0.012em; font-weight: 600; }
+      .f-kk { font-family: "Inter", sans-serif; letter-spacing: -0.012em; font-weight: 600; }
+      .f-zh { font-family: "Noto Sans SC", "Inter", sans-serif; letter-spacing: 0.01em; }
+      .f-ko { font-family: "Noto Sans KR", "Inter", sans-serif; letter-spacing: -0.01em; }
+      .f-hi { font-family: "Noto Sans Devanagari", "Inter", sans-serif; }
+      .f-ar { font-family: "Noto Sans Arabic", "Inter", sans-serif; }
+      .roman { margin-top: 30px; font-family: "Inter", sans-serif; font-style: italic; font-weight: 500; letter-spacing: -0.01em; font-size: 31px; color: #e6dcff; opacity: 0; }
+      .tr { margin-top: 34px; display: inline-flex; align-items: center; padding: 14px 34px; border-radius: 999px;
+        background: rgba(14, 9, 38, 0.6); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.18);
+        font-family: "Inter", sans-serif; font-weight: 500; letter-spacing: -0.012em; font-size: 33px; color: #fff; opacity: 0; }
+
+      /* ---- journey track ---- */
+      #track { position: absolute; left: 160px; top: 920px; width: 1600px; height: 90px; opacity: 0; }
+      #track .rail { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.16); }
+      #track .fill { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; transform-origin: 0 50%;
+        background: linear-gradient(90deg, var(--violet), var(--magenta), var(--coral), var(--orange)); transform: scaleX(0); }
+      #track .stop { position: absolute; top: 5px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
+        background: #2a2050; border: 3px solid rgba(255, 255, 255, 0.4); }
+      #track .label { position: absolute; top: 36px; width: 200px; margin-left: -100px; text-align: center; white-space: nowrap;
+        font-family: var(--font-ui); font-weight: 500; font-size: 28px; letter-spacing: -0.01em; line-height: 1.2; color: rgba(255, 255, 255, 0.55); }
+      #traveler { position: absolute; top: -2px; left: 0; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff 0%, var(--orange) 35%, var(--coral) 70%);
+        box-shadow: 0 0 24px 6px rgba(254, 71, 100, 0.7); }
+
+      /* ---- good-luck finale ---- */
+      .luck { position: absolute; left: 0; top: 0; padding: 12px 28px; border-radius: 999px; white-space: nowrap;
+        font-family: var(--font-ui); font-weight: 600; letter-spacing: -0.012em; font-size: 34px; color: #fff;
+        background: linear-gradient(135deg, rgba(91, 59, 255, 0.85), rgba(217, 70, 175, 0.85));
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.2); opacity: 0; }
+      .luck.alt { background: linear-gradient(135deg, rgba(254, 71, 100, 0.9), rgba(255, 154, 74, 0.9)); }
+      #bigLuck { position: absolute; top: 680px; width: 1920px; text-align: center; font-weight: 600; font-size: 120px; line-height: 1.05; letter-spacing: -0.032em;
+        background: linear-gradient(90deg, #ffd166, #ff9a4a, #fe4764, #d946af); -webkit-background-clip: text; background-clip: text;
+        color: transparent; opacity: 0; }
+
+      /* ---- credits ---- */
+      /* Credits: plain columns, no card container. */
+      .card { position: absolute; top: 610px; width: 400px; display: flex; flex-direction: column; align-items: center;
+        text-align: center; opacity: 0; }
+      .card .icon { width: 72px; height: 72px; color: #ffffff; }
+      .card .icon svg { width: 100%; height: 100%; display: block; }
+      .card .name { margin-top: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 1.25;
+        letter-spacing: -0.02em; color: #ffffff; }
+      .card .role { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 450; font-size: 34px; line-height: 1.25;
+        letter-spacing: -0.015em; color: rgba(255, 255, 255, 0.7); }
+      .emoji { position: absolute; opacity: 0; visibility: hidden; filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35)); }
+      #attrib { position: absolute; top: 990px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 500;
+        font-size: 28px; letter-spacing: -0.006em; color: rgba(255, 255, 255, 0.72); opacity: 0; }
+      #fade { position: absolute; inset: 0; background: #000; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="87.4" data-width="1920" data-height="1080">
+      <audio id="song" src="assets/song.mp3" data-start="0" data-duration="83.1" data-volume="1" data-fade-out="0.3"></audio>
+
+      <div id="bgLayer" class="layer" data-layout-ignore><div id="blobs" class="layer"></div></div>
+      <div id="pulse" class="layer" data-layout-ignore><div id="shapes" class="layer"></div></div>
+      <div id="rings" class="layer" data-layout-ignore></div>
+
+      <div id="confetti" class="layer" data-layout-ignore></div>
+      <div id="logoWrap"><div id="logoPulse"><img id="logo" src="assets/logo.svg" alt="BDI 475 logo" /></div></div>
+      <div id="title"></div>
+
+      <div id="stage" class="layer"></div>
+      <div id="emojiLayer" class="layer"></div>
+      <div id="luckLayer" class="layer"></div>
+      <div id="bigLuck"></div>
+
+      <div id="track">
+        <div class="rail"></div>
+        <div class="fill"></div>
+        <div id="traveler"></div>
+      </div>
+
+      <div id="cards" class="layer"></div>
+      <div id="attrib">Animated emoji: Noto Emoji by Google (CC BY 4.0) · Fonts: Inter, Noto Sans (OFL)</div>
+      <div id="fade"></div>
+    </div>
+
+    <script>
+      (() => {
+        const S = window.SONG;
+        const $ = (sel) => document.querySelector(sel);
+        const tl = gsap.timeline({ paused: true });
+
+        // Deterministic PRNG (renders must be reproducible frame by frame).
+        let seed = 475593;
+        const rnd = () => {
+          seed = (seed + 0x6d2b79f5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+        const R = (a, b) => a + (b - a) * rnd();
+        const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
+        const mk = (tag, cls, parent, text) => {
+          const e = document.createElement(tag);
+          if (cls) e.className = cls;
+          if (text != null) e.textContent = text;
+          parent.appendChild(e);
+          return e;
+        };
+
+        // Noto Animated Emoji (Lottie). HyperFrames' Lottie adapter seeks every registered
+        // animation to the frame for the current time, so playback is frame-exact.
+        const lottieAnim = (container, name) =>
+          lottie.loadAnimation({ container, renderer: "svg", loop: true, autoplay: false,
+            animationData: JSON.parse(JSON.stringify(window.EMOJI[name])) });
+        const emoji = (name, x, y, size, tIn, tOut) => {
+          const d = mk("div", "emoji", document.getElementById("emojiLayer"));
+          Object.assign(d.style, { left: `${x - size / 2}px`, top: `${y - size / 2}px`, width: `${size}px`, height: `${size}px` });
+          lottieAnim(d, name);
+          gsap.set(d, { autoAlpha: 0, scale: 0 });
+          tl.fromTo(d, { autoAlpha: 1, scale: 0, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.7, ease: "elastic.out(1, 0.5)", immediateRender: false }, tIn);
+          const bobs = Math.floor((tOut - tIn - 1.1) / 0.97);
+          if (bobs >= 2) tl.to(d, { y: -16, duration: 0.97, ease: "sine.inOut", yoyo: true, repeat: bobs - 1 - ((bobs - 1) % 2) }, tIn + 0.7);
+          tl.to(d, { scale: 0, rotation: 25, autoAlpha: 0, duration: 0.35, ease: "back.in(2)" }, tOut - 0.35);
+        };
+
+        const PAL = ["#5b3bff", "#a33ed9", "#d946af", "#fe4764", "#ff9a4a", "#ffd166"];
+        const ACCENT = { en: "#ffb547", zh: "#ff5c7a", vi: "#ffd166", es: "#ff7a45", ko: "#7ad7ff", fr: "#b8a2ff",
+          kk: "#5ee3c1", hi: "#ff9a4a", "ar-SA": "#7cf29a", ms: "#ffd166", "en-SG": "#ff8fb1", "ar-DZ": "#ff7ab8" };
+        const FONT = { en: "f-en", "en-SG": "f-en", zh: "f-zh", ko: "f-ko", kk: "f-kk", hi: "f-hi", "ar-SA": "f-ar", "ar-DZ": "f-ar" };
+        const EM = { "f-en": 0.52, "f-latin": 0.56, "f-kk": 0.6, "f-zh": 1.02, "f-ko": 0.95, "f-hi": 0.62, "f-ar": 0.52 };
+        const STYLE = { en: "karaoke", zh: "drop", vi: "rise", es: "stamp", ko: "pop", fr: "swirl", kk: "slide",
+          hi: "glow", "ar-SA": "blur", ms: "wave", "en-SG": "stamp", "ar-DZ": "pop" };
+        const songEnd = S.songEnd;
+        const finale = S.lines.at(-1).end + 0.25; // logo returns centre stage
+        const credits = S.creditsStart;
+
+        // ---------------------------------------------------------------- runs of one language
+        const runs = [];
+        S.lines.forEach((l) => {
+          const last = runs.at(-1);
+          if (last && last.lang === l.lang && last.section === l.section) last.lines.push(l);
+          else runs.push({ lang: l.lang, section: l.section, language: l.language, native: l.native, lines: [l] });
+        });
+        S.lines.forEach((l, i) => {
+          const prev = S.lines[i - 1];
+          l.show = Math.min(l.start + 0.1, Math.max(0.2, l.start - 0.3, prev ? prev.end + 0.12 : 0));
+        });
+        S.lines.forEach((l, i) => {
+          const next = S.lines[i + 1];
+          l.hide = next ? Math.min(next.show, l.end + 2.2) : finale;
+          l.run = runs.find((r) => r.lines.includes(l));
+          l.first = l.run.lines[0] === l;
+          l.continues = !!next && next.lang === l.lang && next.section === l.section && next.show <= l.hide + 0.01;
+        });
+        runs.forEach((r) => (r.start = r.lines[0].show));
+        runs.forEach((r, i) => (r.end = runs[i + 1] ? runs[i + 1].start : finale));
+
+        // ---------------------------------------------------------------- background blobs
+        const blobs = $("#blobs");
+        const blobSpec = [
+          { c: "#5b3bff", x: -250, y: -350 }, { c: "#a33ed9", x: 1150, y: -450 }, { c: "#d946af", x: 1250, y: 450 },
+          { c: "#fe4764", x: -300, y: 500 }, { c: "#ff9a4a", x: 450, y: 650 },
+        ];
+        blobSpec.forEach((b, i) => {
+          const d = mk("div", "blob", blobs);
+          d.style.background = `radial-gradient(circle, ${b.c} 0%, ${b.c}88 30%, transparent 66%)`;
+          gsap.set(d, { x: b.x, y: b.y });
+          const dur = 7 + i * 1.3;
+          tl.to(d, { x: b.x + R(-260, 260), y: b.y + R(-200, 200), scale: R(0.85, 1.25), duration: dur, ease: "sine.inOut",
+            yoyo: true, repeat: Math.ceil(S.total / dur) - 1 }, 0);
+        });
+        // Hue drift per language run, staying in the logo's violet→orange family.
+        const HUES = [0, 22, -18, 30, -30, 14, -24, 28, -14, 18, -8, 0];
+        runs.forEach((r, i) => tl.to(blobs, { filter: `hue-rotate(${HUES[i % HUES.length]}deg)`, duration: 1.2, ease: "sine.inOut" }, r.start));
+
+        // Floating rounded "logo blocks".
+        const shapes = $("#shapes");
+        for (let i = 0; i < 9; i++) {
+          const s = mk("div", "shape", shapes);
+          const size = R(50, 170);
+          const c1 = pick(PAL), c2 = pick(PAL);
+          Object.assign(s.style, { width: `${size}px`, height: `${size * R(0.9, 1.25)}px`, left: `${R(-40, 1880)}px`,
+            top: `${R(-40, 1040)}px`, background: `linear-gradient(${Math.floor(R(0, 360))}deg, ${c1}, ${c2})` });
+          gsap.set(s, { rotation: R(-30, 30) });
+          const dur = R(6, 11);
+          tl.to(s, { x: R(-140, 140), y: R(-120, 120), rotation: `+=${R(-90, 90)}`, duration: dur, ease: "sine.inOut",
+            yoyo: true, repeat: Math.ceil(S.total / dur) - 1 }, 0);
+        }
+
+        // Beat pulses: a gentle bounce on every beat, a ring ripple on every other beat.
+        const rings = [0, 1, 2].map(() => mk("div", "ring", $("#rings")));
+        S.beats.forEach((b, i) => {
+          tl.fromTo("#pulse", { scale: 1.012 }, { scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, b);
+          if (i % 2 === 0) {
+            const ring = rings[(i / 2) % 3];
+            tl.fromTo(ring, { scale: 0.55, opacity: 0.14 }, { scale: 1.35, opacity: 0, duration: 1.4, ease: "power1.out", immediateRender: false }, b);
+          }
+        });
+
+        // ---------------------------------------------------------------- confetti
+        const confettiLayer = $("#confetti");
+        const CONFETTI = ["#4a33c9", "#8434b3", "#b23c90", "#d23d58", "#d97f3e", "#d9ad52"];
+        function burst(t, cx, cy, n = 40, power = 1) {
+          for (let i = 0; i < n; i++) {
+            const p = mk("div", rnd() < 0.35 ? "confetto round" : "confetto", confettiLayer);
+            p.style.background = pick(CONFETTI);
+            const ang = R(-Math.PI, 0);
+            const v = R(300, 750) * power;
+            const dx = Math.cos(ang) * v, up = Math.sin(ang) * v * 0.9;
+            const fall = R(500, 900);
+            const life = R(1.6, 2.4);
+            gsap.set(p, { x: cx, y: cy, opacity: 0 });
+            tl.set(p, { opacity: 0.7 }, t);
+            tl.to(p, { x: cx + dx, duration: life, ease: "power2.out" }, t);
+            tl.to(p, { y: cy + up, duration: life * 0.35, ease: "power2.out" }, t);
+            tl.to(p, { y: cy + up + fall, duration: life * 0.65, ease: "power1.in" }, t + life * 0.35);
+            tl.to(p, { rotation: R(-720, 720), duration: life, ease: "none" }, t);
+            tl.to(p, { opacity: 0, duration: 0.4 }, t + life - 0.4);
+          }
+        }
+
+        // ---------------------------------------------------------------- logo + title
+        $("#title").textContent = `${S.title}  ·  ${S.subtitle}`;
+        tl.fromTo("#logo", { scale: 0.86, rotation: -3 }, { scale: 1, rotation: 0, duration: 1.1, ease: "elastic.out(1, 0.5)" }, 0.05);
+        gsap.set("#title", { opacity: 1 });
+        S.beats.filter((b) => b < S.lines[3].show - 0.3).forEach((b, i) => {
+          if (i % 2 === 0) tl.fromTo("#logoPulse", { scale: 1.04 }, { scale: 1, duration: 0.45, ease: "power2.out", immediateRender: false }, b);
+        });
+        const toBadge = S.lines.find((l) => l.section > 0).show - 0.9; // before the second section
+        tl.to("#title", { opacity: 0, y: -20, duration: 0.4 }, toBadge - 0.2);
+        tl.to("#logoWrap", { x: -596, y: -60, scale: 0.3375, duration: 0.9, ease: "power3.inOut" }, toBadge);
+        burst(0.55, 960, 500, 50, 1.1);
+
+        // ---------------------------------------------------------------- journey track
+        const track = $("#track");
+        const stopX = (i) => (1600 * i) / (runs.length - 1);
+        runs.forEach((r, i) => {
+          const stop = mk("div", "stop", track);
+          stop.style.left = `${stopX(i)}px`;
+          const lab = mk("div", "label", track, S.languages[r.lang]?.short ?? r.language);
+          if (FONT[r.lang]) lab.classList.add(FONT[r.lang]);
+          lab.style.left = `${stopX(i)}px`;
+          lab.style.top = i % 2 ? "-44px" : "34px";
+          r.stopEl = stop;
+          r.labelEl = lab;
+        });
+        track.appendChild($("#traveler"));
+        tl.fromTo(track, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.8);
+        runs.forEach((r, i) => {
+          const t = r.start;
+          tl.to("#traveler", { x: stopX(i), duration: i === 0 ? 0.01 : 0.7, ease: "back.inOut(1.6)" }, t);
+          tl.to("#track .fill", { scaleX: i / (runs.length - 1), duration: 0.7, ease: "power2.inOut" }, t);
+          tl.to(r.stopEl, { backgroundColor: ACCENT[r.lang], borderColor: "#ffffff", scale: 1.3, duration: 0.3 }, t + 0.5);
+          tl.to(r.labelEl, { color: "#ffffff", scale: 1.15, y: 2, duration: 0.3 }, t + 0.5);
+          if (i < runs.length - 1) tl.to(r.labelEl, { scale: 1, y: 0, color: "rgba(255,255,255,0.8)", duration: 0.3 }, runs[i + 1].start + 0.4);
+        });
+        tl.to(track, { opacity: 0, y: 40, duration: 0.6, ease: "power2.in" }, finale);
+
+        // ---------------------------------------------------------------- lyric lines
+        const stage = $("#stage");
+        S.lines.forEach((l) => {
+          const accent = ACCENT[l.lang] || "#ffb547";
+          const style = STYLE[l.lang] || "pop";
+          const font = FONT[l.lang] || "f-latin";
+          const box = mk("div", "line", stage);
+          box.style.setProperty("--accent", accent);
+          box.style.top = `${l.section === 0 ? 525 : 250}px`;
+
+          const chip = mk("div", "chip", box);
+          mk("span", "", chip, l.language);
+          if (l.native && l.native !== l.language && l.lang !== "en") {
+            mk("span", "sep", chip, "·");
+            const n = mk("span", "native", chip, l.native);
+            if (FONT[l.lang]) n.classList.add(FONT[l.lang]);
+          }
+
+          const content = mk("div", "content", box);
+          const lyr = mk("div", `lyric ${font}`, content);
+          if (l.rtl) lyr.dir = "rtl";
+          if (l.lang === "zh") lyr.classList.add("tight");
+          const chars = [...l.text].length;
+          const size = Math.round(Math.max(56, Math.min(l.section === 0 ? 80 : 96, 1500 / (chars * EM[font]))));
+          lyr.style.fontSize = `${size}px`;
+
+          const spans = l.words.map((w, wi) => {
+            const s = mk("span", "w", lyr);
+            if (style === "swirl" || style === "wave") {
+              [...w.t].forEach((ch) => mk("span", "c", s, ch));
+            } else s.textContent = w.t;
+            return s;
+          });
+
+          let roman = null, tr = null;
+          if (l.roman) roman = mk("div", "roman", content, l.roman);
+          if (l.en) {
+            tr = mk("div", "tr", content);
+            mk("span", "", tr, l.en);
+          }
+
+          // Show / hide.
+          tl.set(box, { autoAlpha: 1 }, l.show);
+          if (l.first) tl.fromTo(chip, { opacity: 0, y: -30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, l.show);
+          tl.to(content, { opacity: 0, y: -50, duration: 0.24, ease: "power2.in" }, l.hide - 0.24);
+          if (!l.continues) tl.to(chip, { opacity: 0, y: -20, duration: 0.22 }, l.hide - 0.22);
+          tl.set(box, { autoAlpha: 0 }, l.hide);
+          if (roman) tl.fromTo(roman, { opacity: 0, y: 16 }, { opacity: 0.85, y: 0, duration: 0.4 }, l.show + 0.05);
+          if (tr) tl.fromTo(tr, { opacity: 0, y: 26, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, l.show + 0.05);
+
+          // Word entrances — a different motion language for each language.
+          l.words.forEach((w, wi) => {
+            const s = spans[wi];
+            const t = Math.max(l.show + 0.05, w.s - 0.06);
+            switch (style) {
+              case "karaoke":
+                gsap.set(s, { opacity: 0.28 });
+                tl.to(s, { opacity: 1, color: accent, scale: 1.04, y: -3, duration: 0.14, ease: "power2.out" }, t);
+                tl.to(s, { color: "#ffffff", scale: 1, y: 0, duration: 0.3, ease: "power2.inOut" }, Math.max(t + 0.14, w.e));
+                break;
+              case "drop":
+                tl.fromTo(s, { y: -36, opacity: 0, rotation: R(-6, 6) }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, ease: "power3.out" }, t - 0.08);
+                break;
+              case "rise":
+                tl.fromTo(s, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, t);
+                break;
+              case "stamp":
+                tl.fromTo(s, { scale: 1.18, opacity: 0, rotation: R(-4, 4) }, { scale: 1, opacity: 1, rotation: 0, duration: 0.25, ease: "power2.out" }, t - 0.06);
+                break;
+              case "pop":
+                tl.fromTo(s, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, t);
+                break;
+              case "slide": {
+                const dir = wi % 2 ? 1 : -1;
+                tl.fromTo(s, { x: 60 * dir, opacity: 0, skewX: -6 * dir }, { x: 0, opacity: 1, skewX: 0, duration: 0.45, ease: "power3.out" }, t);
+                break;
+              }
+              case "glow":
+                tl.fromTo(s, { opacity: 0, scale: 1.06, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, t);
+                break;
+              case "blur":
+                tl.fromTo(s, { opacity: 0, x: 24, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, t);
+                break;
+              case "swirl":
+                [...s.children].forEach((c, ci) =>
+                  tl.fromTo(c, { x: R(-30, 30), y: R(-24, 24), rotation: R(-25, 25), opacity: 0 },
+                    { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, t + ci * 0.025));
+                break;
+              case "wave":
+                [...s.children].forEach((c, ci) => {
+                  tl.fromTo(c, { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" }, t + ci * 0.03);
+                  tl.to(c, { y: -5, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, t + 0.4 + ci * 0.03);
+                });
+                break;
+            }
+            // Accent flash while the word is being sung.
+            if (style !== "karaoke") {
+              tl.fromTo(s, { color: accent }, { color: "#ffffff", duration: 0.5, ease: "power1.in", immediateRender: false }, Math.max(t + 0.2, w.e));
+              gsap.set(s, { color: accent });
+            }
+          });
+        });
+
+        // ---------------------------------------------------------------- animated emoji
+        const LANG_EMOJI = { zh: ["books", "sparkles"], ko: ["heart", "star_struck"], vi: ["grin", "raised_hands"],
+          es: ["fire", "rainbow"], fr: ["wave"], kk: ["glowing_star"], hi: ["chart", "notes"], "ar-SA": ["cool"],
+          ms: ["clover"], "en-SG": ["rocket"], "ar-DZ": ["heart"] };
+        runs.forEach((r, i) => {
+          const list = i === 0 ? ["partying", "notes"] : i === runs.length - 1 ? ["globe", "grad_cap"] : LANG_EMOJI[r.lang] || [];
+          const slots = i === 0 ? [[430, 250, 150], [1490, 250, 150]]
+            : i === runs.length - 1 ? [[105, 470, 120], [1815, 470, 120]]
+            : i % 2 ? [[1670, 750, 150], [270, 210, 150]] : [[250, 750, 150], [1650, 210, 150]];
+          const tOut = i === 0 ? toBadge + 0.4 : r.end + 0.15;
+          list.forEach((name, k) => emoji(name, slots[k][0], slots[k][1], slots[k][2], r.start + 0.05 + k * 0.2, tOut));
+        });
+        emoji("party_popper", 520, 735, 130, finale + 0.5, credits);
+        emoji("confetti_ball", 1400, 735, 130, finale + 0.7, credits);
+
+        // Confetti on each section change and on the final word.
+        S.sections.slice(1).forEach((sec) => {
+          const firstLine = S.lines.find((l) => l.section === S.sections.indexOf(sec));
+          if (firstLine) burst(firstLine.start, R(500, 1420), 900, 34, 1);
+        });
+
+        // ---------------------------------------------------------------- outro: good luck in every language
+        const luckLayer = $("#luckLayer");
+        const outroStart = runs.at(-1).start;
+        const luckLangs = Object.keys(S.languages).filter((k) => k !== "en");
+        const topSlots = [[430, 150], [820, 120], [1220, 150], [1600, 120], [1650, 230]];
+        const botSlots = [[260, 760], [620, 790], [980, 760], [1340, 790], [1690, 760], [300, 650]];
+        const slots = [...topSlots, ...botSlots];
+        const lucks = luckLangs.map((k, i) => {
+          const p = mk("div", i % 2 ? "luck alt" : "luck", luckLayer, S.languages[k].good_luck);
+          if (FONT[k]) p.classList.add(FONT[k]);
+          if (k.startsWith("ar")) p.dir = "rtl";
+          const [x, y] = slots[i];
+          gsap.set(p, { x, y, xPercent: -50, yPercent: -50, opacity: 0, scale: 0 });
+          const beat = S.beats.find((b) => b >= outroStart + i * 0.48) ?? outroStart + i * 0.48;
+          tl.to(p, { opacity: 1, scale: 0.8, duration: 0.5, ease: "back.out(2.5)" }, beat);
+          // Gentle float until the finale; an odd repeat count ends back at the start position.
+          const floats = Math.floor((finale - (beat + 0.5)) / 1.2);
+          const rep = floats % 2 === 0 ? floats - 1 : floats - 2;
+          if (rep >= 1) tl.to(p, { y: y - 14, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: rep }, beat + 0.5);
+          return p;
+        });
+        // Finale: logo back to centre stage, the wishes orbit around it.
+        tl.to("#logoWrap", { x: -85, y: 30, scale: 1.2656, duration: 1.0, ease: "power3.inOut" }, finale);
+        lucks.forEach((p, i) => {
+          const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
+          tl.to(p, { x: 960 + Math.cos(a) * 790, y: 320 + Math.sin(a) * 262, scale: 1, duration: 0.9, ease: "power3.inOut" }, finale + 0.05 * i);
+        });
+        tl.fromTo("#bigLuck", { opacity: 0, scale: 0.6, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(2)" }, finale + 1.15);
+        $("#bigLuck").textContent = "Good luck!";
+        burst(finale + 1.15, 960, 720, 60, 1.3);
+        burst(finale + 1.5, 420, 820, 36, 1.1);
+        burst(finale + 1.8, 1500, 820, 36, 1.1);
+
+        // ---------------------------------------------------------------- credits
+        lucks.forEach((p, i) => {
+          const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
+          tl.to(p, { x: 960 + Math.cos(a) * 1500, y: 320 + Math.sin(a) * 900, opacity: 0, duration: 0.8, ease: "power2.in" }, credits);
+        });
+        tl.to("#bigLuck", { opacity: 0, y: -30, duration: 0.5 }, credits);
+        tl.to("#logoWrap", { x: 60, y: 150, scale: 0.8125, duration: 1.0, ease: "power3.inOut" }, credits);
+
+        // Lucide icons (ISC licence, lucide.dev), drawn in white.
+        const LUCIDE = {
+          "music": "<path d=\"M21 16V3a1 1 0 0 0-1.28-.96l-10 2.917a1 1 0 0 0-.72.96V19\" /> <circle cx=\"18\" cy=\"16\" r=\"3\" /> <circle cx=\"6\" cy=\"19\" r=\"3\" />",
+          "mic-vocal": "<path d=\"m11 7.601-5.994 8.19a1 1 0 0 0 .1 1.298l.817.818a1 1 0 0 0 1.314.087L15.09 12\" /> <path d=\"M16.5 21.174C15.5 20.5 14.372 20 13 20c-2.058 0-3.928 2.356-6 2-2.072-.356-2.775-3.369-1.5-4.5\" /> <circle cx=\"16\" cy=\"7\" r=\"5\" />",
+          "square-terminal": "<path d=\"m7 11 2-2-2-2\" /> <path d=\"M11 13h4\" /> <rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\" />",
+          "clapperboard": "<path d=\"m12.296 3.464 3.02 3.956\" /> <path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z\" /> <path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" /> <path d=\"m6.18 5.276 3.1 3.899\" />",
+        };
+        const cardTimes = S.credits.map((c, i) => credits + 0.7 + i * 0.22);
+        S.credits.forEach((c, i) => {
+          const card = mk("div", "card", $("#cards"));
+          card.style.left = `${160 + i * 400}px`;
+          const ic = mk("div", "icon", card);
+          ic.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[c.icon]}</svg>`;
+          mk("div", "name", card, c.name);
+          mk("div", "role", card, c.role);
+          tl.fromTo(card, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, cardTimes[i] - 0.1);
+          tl.fromTo(ic, { scale: 0.4, rotation: -12 }, { scale: 1, rotation: 0, duration: 0.8, ease: "back.out(2.2)" }, cardTimes[i] - 0.05);
+        });
+
+        tl.fromTo("#attrib", { opacity: 0 }, { opacity: 1, duration: 0.6 }, credits + 1.4);
+        tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, S.total - 0.9);
+        tl.set({}, {}, S.total); // pin the timeline length to the composition length
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["main"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </body>
+</html>
