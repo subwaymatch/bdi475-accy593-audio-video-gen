@@ -36,18 +36,18 @@
       /* ---- background ---- */
       .blob { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; opacity: 0.5; mix-blend-mode: screen; }
       .shape { position: absolute; border-radius: 28%; opacity: 0.22; }
-      .ring { position: absolute; left: 960px; top: 470px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
+      .ring { position: absolute; left: 960px; top: 410px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
         border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.5); opacity: 0; }
-      .ghost { position: absolute; top: 330px; left: 0; white-space: nowrap; font-family: var(--font-display);
+      .ghost { position: absolute; top: 270px; left: 0; white-space: nowrap; font-family: var(--font-display);
         font-weight: 800; font-size: 300px; line-height: 1; color: #fff; opacity: 0; }
       .confetto { position: absolute; left: 0; top: 0; width: 18px; height: 10px; border-radius: 3px; opacity: 0; }
       .confetto.round { width: 14px; height: 14px; border-radius: 50%; }
 
       /* ---- logo & title ---- */
-      #logoWrap { position: absolute; left: 510px; top: 110px; width: 900px; height: 442px; transform-origin: 0 0; }
+      #logoWrap { position: absolute; left: 510px; top: 60px; width: 900px; height: 442px; transform-origin: 0 0; }
       #logoPulse { width: 100%; height: 100%; }
       #logo { width: 100%; height: 100%; display: block; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.35)); }
-      #title { position: absolute; top: 560px; width: 1920px; text-align: center; font-family: var(--font-ui);
+      #title { position: absolute; top: 510px; width: 1920px; text-align: center; font-family: var(--font-ui);
         font-weight: 800; font-size: 40px; letter-spacing: 0.04em; color: #ffd9c2; opacity: 0; }
 
       /* ---- lyric lines ---- */
@@ -78,7 +78,7 @@
         border-radius: 999px; padding: 6px 14px; }
 
       /* ---- journey track ---- */
-      #track { position: absolute; left: 160px; top: 990px; width: 1600px; height: 90px; opacity: 0; }
+      #track { position: absolute; left: 160px; top: 920px; width: 1600px; height: 90px; opacity: 0; }
       #track .rail { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.16); }
       #track .fill { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; transform-origin: 0 50%;
         background: linear-gradient(90deg, var(--violet), var(--magenta), var(--coral), var(--orange)); transform: scaleX(0); }
@@ -96,23 +96,23 @@
         background: linear-gradient(135deg, rgba(91, 59, 255, 0.85), rgba(217, 70, 175, 0.85));
         border: 2px solid rgba(255, 255, 255, 0.35); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); opacity: 0; }
       .luck.alt { background: linear-gradient(135deg, rgba(254, 71, 100, 0.9), rgba(255, 154, 74, 0.9)); }
-      #bigLuck { position: absolute; top: 760px; width: 1920px; text-align: center; font-weight: 800; font-size: 120px; line-height: 1;
+      #bigLuck { position: absolute; top: 680px; width: 1920px; text-align: center; font-weight: 800; font-size: 120px; line-height: 1;
         background: linear-gradient(90deg, #ffd166, #ff9a4a, #fe4764, #d946af); -webkit-background-clip: text; background-clip: text;
         color: transparent; opacity: 0; }
-      #bigLuckSub { position: absolute; top: 895px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 800;
+      #bigLuckSub { position: absolute; top: 815px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 800;
         font-size: 40px; color: #ffe7d6; opacity: 0; }
 
       /* ---- credits ---- */
-      #madeWith { position: absolute; top: 330px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 900;
+      #madeWith { position: absolute; top: 290px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 900;
         font-size: 44px; letter-spacing: 0.16em; color: #ffd9c2; opacity: 0; }
-      .card { position: absolute; top: 420px; width: 500px; height: 260px; border-radius: 36px; padding: 34px 36px;
+      .card { position: absolute; top: 380px; width: 500px; height: 260px; border-radius: 36px; padding: 34px 36px;
         background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
         border: 2px solid rgba(255, 255, 255, 0.25); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); opacity: 0; }
       .card .icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
         font-family: var(--font-ui); font-weight: 900; font-size: 34px; color: #fff; }
       .card .name { margin-top: 22px; font-weight: 800; font-size: 54px; line-height: 1.05; }
       .card .role { margin-top: 10px; font-family: var(--font-ui); font-weight: 700; font-size: 28px; color: rgba(255, 255, 255, 0.78); }
-      #subs { position: absolute; top: 770px; left: 160px; width: 1600px; height: 160px; }
+      #subs { position: absolute; top: 700px; left: 160px; width: 1600px; height: 160px; }
       .phrase { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center;
         column-gap: 0.3em; font-family: var(--font-ui); font-weight: 800; font-size: 50px; line-height: 1.3; opacity: 0; }
       .phrase .w { display: inline-block; color: rgba(255, 255, 255, 0.35); }
@@ -290,8 +290,8 @@
         });
         const toBadge = S.lines[3].show - 0.9; // before the first non-English line
         tl.to("#title", { opacity: 0, y: -20, duration: 0.4 }, toBadge - 0.2);
-        tl.to("#logoWrap", { x: -466, y: -80, scale: 0.24, duration: 0.9, ease: "power3.inOut" }, toBadge);
-        burst(0.55, 960, 560, 50, 1.1);
+        tl.to("#logoWrap", { x: -466, y: -30, scale: 0.24, duration: 0.9, ease: "power3.inOut" }, toBadge);
+        burst(0.55, 960, 500, 50, 1.1);
 
         // ---------------------------------------------------------------- journey track
         const track = $("#track");
@@ -326,7 +326,7 @@
           const font = FONT[l.lang] || "f-latin";
           const box = mk("div", "line", stage);
           box.style.setProperty("--accent", accent);
-          box.style.top = `${l.section === 0 ? 620 : 300}px`;
+          box.style.top = `${l.section === 0 ? 570 : 240}px`;
 
           const chip = mk("div", "chip", box);
           mk("span", "dot", chip);
@@ -426,7 +426,7 @@
         // Confetti on each section change and on the final word.
         S.sections.slice(1).forEach((sec) => {
           const firstLine = S.lines.find((l) => l.section === S.sections.indexOf(sec));
-          if (firstLine) burst(firstLine.start, R(500, 1420), 980, 34, 1);
+          if (firstLine) burst(firstLine.start, R(500, 1420), 900, 34, 1);
         });
 
         // ---------------------------------------------------------------- outro: good luck in every language
@@ -434,7 +434,7 @@
         const outroStart = runs.at(-1).start;
         const luckLangs = Object.keys(S.languages).filter((k) => k !== "en");
         const topSlots = [[430, 150], [820, 120], [1220, 150], [1600, 120], [1650, 230]];
-        const botSlots = [[260, 830], [620, 860], [980, 830], [1340, 860], [1690, 830], [300, 720]];
+        const botSlots = [[260, 760], [620, 790], [980, 760], [1340, 790], [1690, 760], [300, 650]];
         const slots = [...topSlots, ...botSlots];
         const lucks = luckLangs.map((k, i) => {
           const p = mk("div", i % 2 ? "luck alt" : "luck", luckLayer, S.languages[k].good_luck);
@@ -448,26 +448,26 @@
           return p;
         });
         // Finale: logo back to centre stage, the wishes orbit around it.
-        tl.to("#logoWrap", { x: 45, y: 40, scale: 0.9, duration: 1.0, ease: "power3.inOut" }, finale);
+        tl.to("#logoWrap", { x: 45, y: 60, scale: 0.9, duration: 1.0, ease: "power3.inOut" }, finale);
         lucks.forEach((p, i) => {
           const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
-          tl.to(p, { x: 960 + Math.cos(a) * 790, y: 365 + Math.sin(a) * 285, scale: 1, duration: 0.9, ease: "power3.inOut" }, finale + 0.05 * i);
+          tl.to(p, { x: 960 + Math.cos(a) * 790, y: 320 + Math.sin(a) * 262, scale: 1, duration: 0.9, ease: "power3.inOut" }, finale + 0.05 * i);
         });
         tl.fromTo("#bigLuck", { opacity: 0, scale: 0.6, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(2)" }, finale + 0.4);
         tl.fromTo("#bigLuckSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, finale + 0.8);
         $("#bigLuck").textContent = "Good luck!";
         $("#bigLuckSub").textContent = "on all your journeys ahead ✦";
-        burst(finale + 0.3, 960, 800, 60, 1.3);
-        burst(finale + 0.9, 420, 900, 36, 1.1);
-        burst(finale + 1.3, 1500, 900, 36, 1.1);
+        burst(finale + 0.3, 960, 720, 60, 1.3);
+        burst(finale + 0.9, 420, 820, 36, 1.1);
+        burst(finale + 1.3, 1500, 820, 36, 1.1);
 
         // ---------------------------------------------------------------- credits + narration
         lucks.forEach((p, i) => {
           const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
-          tl.to(p, { x: 960 + Math.cos(a) * 1500, y: 345 + Math.sin(a) * 900, opacity: 0, duration: 0.8, ease: "power2.in" }, credits);
+          tl.to(p, { x: 960 + Math.cos(a) * 1500, y: 320 + Math.sin(a) * 900, opacity: 0, duration: 0.8, ease: "power2.in" }, credits);
         });
         tl.to(["#bigLuck", "#bigLuckSub"], { opacity: 0, y: -30, duration: 0.5 }, credits);
-        tl.to("#logoWrap", { x: 202.5, y: -60, scale: 0.55, duration: 1.0, ease: "power3.inOut" }, credits);
+        tl.to("#logoWrap", { x: 202.5, y: -30, scale: 0.55, duration: 1.0, ease: "power3.inOut" }, credits);
         tl.fromTo("#madeWith", { opacity: 0, scale: 1.4, y: -10 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out" }, credits + 0.6);
 
         const nw = S.narration.words;
@@ -510,8 +510,8 @@
           ph.forEach((w, wi) => tl.to(spans[wi], { color: "#ffffff", duration: 0.12 }, w.s));
         });
         const congrats = wordTime(/^Congratulations/i, S.total - 5);
-        burst(congrats, 480, 760, 40, 1.2);
-        burst(congrats + 0.25, 1440, 760, 40, 1.2);
+        burst(congrats, 480, 700, 40, 1.2);
+        burst(congrats + 0.25, 1440, 700, 40, 1.2);
 
         tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, S.total - 0.9);
         tl.set({}, {}, S.total); // pin the timeline length to the composition length
