@@ -16,7 +16,7 @@
       @font-face { font-family: "Noto Sans Arabic"; src: url("assets/fonts/NotoSansArabic.woff2") format("woff2"); font-weight: 100 900; }
 
       :root {
-        --ground: #0a0820;
+        --ground: #07061a;
         --ink: #ffffff;
         --violet: #5b3bff;
         --purple: #a33ed9;
@@ -30,14 +30,14 @@
       html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
       #root {
         position: relative; width: 1920px; height: 1080px; overflow: hidden;
-        background: radial-gradient(ellipse 80% 70% at 50% 45%, #1c1440 0%, #120d2e 55%, var(--ground) 100%);
+        background: radial-gradient(ellipse 80% 70% at 50% 45%, #150f33 0%, #0d0a24 55%, var(--ground) 100%);
         color: var(--ink); font-family: var(--font-display);
       }
       .layer { position: absolute; inset: 0; pointer-events: none; }
 
       /* ---- background ---- */
-      .blob { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; opacity: 0.2; mix-blend-mode: screen; }
-      .shape { position: absolute; border-radius: 28%; opacity: 0.07; }
+      .blob { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; opacity: 0.14; mix-blend-mode: screen; }
+      .shape { position: absolute; border-radius: 28%; opacity: 0.05; }
       .ring { position: absolute; left: 960px; top: 410px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
         border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); opacity: 0; }
       .confetto { position: absolute; left: 0; top: 0; width: 18px; height: 10px; border-radius: 3px; opacity: 0; }
@@ -132,6 +132,7 @@
       <div id="pulse" class="layer" data-layout-ignore><div id="shapes" class="layer"></div></div>
       <div id="rings" class="layer" data-layout-ignore></div>
 
+      <div id="confetti" class="layer" data-layout-ignore></div>
       <div id="logoWrap"><div id="logoPulse"><img id="logo" src="assets/logo.svg" alt="BDI 475 logo" /></div></div>
       <div id="title"></div>
 
@@ -151,7 +152,6 @@
       <div id="cards" class="layer"></div>
       <div id="subs"></div>
       <div id="attrib">Animated emoji: Noto Emoji by Google (CC BY 4.0) · Fonts: Inter, Noto Sans (OFL)</div>
-      <div id="confetti" class="layer" data-layout-ignore></div>
       <div id="fade"></div>
     </div>
 
@@ -271,17 +271,18 @@
 
         // ---------------------------------------------------------------- confetti
         const confettiLayer = $("#confetti");
+        const CONFETTI = ["#4a33c9", "#8434b3", "#b23c90", "#d23d58", "#d97f3e", "#d9ad52"];
         function burst(t, cx, cy, n = 40, power = 1) {
           for (let i = 0; i < n; i++) {
             const p = mk("div", rnd() < 0.35 ? "confetto round" : "confetto", confettiLayer);
-            p.style.background = pick(PAL);
+            p.style.background = pick(CONFETTI);
             const ang = R(-Math.PI, 0);
             const v = R(300, 750) * power;
             const dx = Math.cos(ang) * v, up = Math.sin(ang) * v * 0.9;
             const fall = R(500, 900);
             const life = R(1.6, 2.4);
             gsap.set(p, { x: cx, y: cy, opacity: 0 });
-            tl.set(p, { opacity: 1 }, t);
+            tl.set(p, { opacity: 0.7 }, t);
             tl.to(p, { x: cx + dx, duration: life, ease: "power2.out" }, t);
             tl.to(p, { y: cy + up, duration: life * 0.35, ease: "power2.out" }, t);
             tl.to(p, { y: cy + up + fall, duration: life * 0.65, ease: "power1.in" }, t + life * 0.35);
@@ -442,8 +443,8 @@
           const tOut = i === 0 ? toBadge + 0.4 : r.end + 0.15;
           list.forEach((name, k) => emoji(name, slots[k][0], slots[k][1], slots[k][2], r.start + 0.05 + k * 0.2, tOut));
         });
-        emoji("party_popper", 520, 735, 130, finale + 0.5, credits + 0.4);
-        emoji("confetti_ball", 1400, 735, 130, finale + 0.7, credits + 0.4);
+        emoji("party_popper", 520, 735, 130, finale + 0.5, credits);
+        emoji("confetti_ball", 1400, 735, 130, finale + 0.7, credits);
 
         // Confetti on each section change and on the final word.
         S.sections.slice(1).forEach((sec) => {
