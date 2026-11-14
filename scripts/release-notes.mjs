@@ -20,5 +20,6 @@ for (const s of L.sections) {
 }
 out.push("", "### How it was made", "");
 for (const c of L.credits) out.push(`- **${c.name}** — ${c.role}`);
+out.push("", "Animated emoji: [Noto Emoji Animation](https://googlefonts.github.io/noto-emoji-animation/) by Google (CC BY 4.0). Fonts: Inter, Noto Sans (SIL OFL).");
 out.push("", "_This video was generated with AI._");
 console.log(out.join("\n"));

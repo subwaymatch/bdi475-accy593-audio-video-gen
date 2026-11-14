@@ -41,10 +41,16 @@ song/lyrics.json ──► scripts/generate-audio.mjs ──► video/assets/son
   karaoke (English), falling characters (Mandarin), rising words (Vietnamese), stamps (Spanish),
   elastic pops (Korean, Algerian), swirling letters (French), side slides (Kazakh), a glow-in
   (Hindi), an RTL blur-in (Saudi Arabic) and a letter wave (Malay). Gradient blobs, floating
-  logo blocks and ripples pulse on the detected beats. A "language journey" track along the
-  bottom follows the song.
-- The fonts (Baloo 2, Nunito, ZCOOL KuaiLe, Jua, Baloo Bhaijaan 2; SIL OFL) are subset to the
-  glyphs the video uses and kept in `video/assets/fonts`. Local renders and CI renders therefore
+  logo blocks and ripples pulse on the detected beats. Animated emojis pop in for each
+  language, and a "language journey" track near the bottom follows the song.
+- The animated emojis are [Noto Animated Emoji](https://googlefonts.github.io/noto-emoji-animation/)
+  by Google (CC BY 4.0). They are Lottie files, bundled into `video/assets/emoji/emoji-data.js`
+  by `scripts/emoji.mjs` and played with lottie-web (MIT). HyperFrames' Lottie adapter seeks
+  them frame by frame, so renders stay deterministic.
+- Typography is neutral and Helvetica-like. English uses Inter with tight tracking. Other
+  Latin and Cyrillic text uses Inter. Chinese, Korean, Hindi and Arabic use Noto Sans SC, KR,
+  Devanagari and Arabic. All fonts are SIL OFL, subset to the glyphs the video uses and kept
+  in `video/assets/fonts`. Local renders and CI renders therefore
   look the same.
 - The generated audio is committed, so rendering needs no API key and the captions stay in sync.
 

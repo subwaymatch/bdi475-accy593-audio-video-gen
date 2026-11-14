@@ -19,11 +19,11 @@ BASE = "https://raw.githubusercontent.com/google/fonts/main/ofl/"
 
 FONTS = {
     # file stem: (path in google/fonts, scripts it must cover)
-    "Baloo2": ("baloo2/Baloo2%5Bwght%5D.ttf", "latin+devanagari"),
-    "Nunito": ("nunito/Nunito%5Bwght%5D.ttf", "latin+cyrillic"),
-    "ZCOOLKuaiLe": ("zcoolkuaile/ZCOOLKuaiLe-Regular.ttf", "han"),
-    "Jua": ("jua/Jua-Regular.ttf", "hangul"),
-    "BalooBhaijaan2": ("baloobhaijaan2/BalooBhaijaan2%5Bwght%5D.ttf", "arabic"),
+    "Inter": ("inter/Inter%5Bopsz,wght%5D.ttf", "latin+vietnamese+cyrillic"),
+    "NotoSansSC": ("notosanssc/NotoSansSC%5Bwght%5D.ttf", "han"),
+    "NotoSansKR": ("notosanskr/NotoSansKR%5Bwght%5D.ttf", "hangul"),
+    "NotoSansDevanagari": ("notosansdevanagari/NotoSansDevanagari%5Bwdth,wght%5D.ttf", "devanagari"),
+    "NotoSansArabic": ("notosansarabic/NotoSansArabic%5Bwdth,wght%5D.ttf", "arabic"),
 }
 
 
@@ -44,7 +44,7 @@ def collect_text() -> str:
     walk(lyrics)
     # Always keep printable ASCII and common punctuation.
     parts.append("".join(chr(c) for c in range(0x20, 0x7F)))
-    parts.append("·•—–’‘“”…¡¿«»→←✦★♪♫ ")
+    parts.append("·•—–’‘“”…¡¿«»→←✦★♪♫▶ ")
     return "".join(parts)
 
 
