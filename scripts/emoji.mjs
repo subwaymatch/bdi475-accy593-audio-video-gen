@@ -12,7 +12,7 @@ export const EMOJI = {
   partying: "1f973", notes: "1f3b6", books: "1f4da", sparkles: "2728", grin: "1f601", raised_hands: "1f64c",
   fire: "1f525", rainbow: "1f308", heart: "1f496", star_struck: "1f929", wave: "1f44b", glowing_star: "1f31f",
   chart: "1f4ca", cool: "1f60e", clover: "1f340", rocket: "1f680", globe: "1f30d", grad_cap: "1f393",
-  party_popper: "1f389", confetti_ball: "1f38a", robot: "1f916", clap: "1f44f", laptop: "1f4bb", clapper: "1f3ac",
+  party_popper: "1f389", confetti_ball: "1f38a",
 };
 
 const data = {};

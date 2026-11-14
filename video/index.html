@@ -48,25 +48,25 @@
       #logoPulse { width: 100%; height: 100%; }
       #logo { width: 100%; height: 100%; display: block; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.35)); }
       #title { position: absolute; top: 510px; width: 1920px; text-align: center; font-family: var(--font-ui);
-        font-weight: 600; font-size: 38px; letter-spacing: -0.02em; color: #ffd9c2; opacity: 0; }
+        font-weight: 500; font-size: 38px; letter-spacing: -0.012em; color: #ffd9c2; opacity: 0; }
 
       /* ---- lyric lines ---- */
       .line { position: absolute; left: 0; width: 1920px; display: flex; flex-direction: column; align-items: center; opacity: 0; visibility: hidden; }
       /* Language label above the lyric: plain text, no pill. */
       .chip { display: inline-flex; align-items: baseline; gap: 12px; white-space: nowrap; color: var(--accent);
-        font-family: var(--font-ui); font-weight: 600; font-size: 34px; letter-spacing: -0.02em; }
+        font-family: var(--font-ui); font-weight: 600; font-size: 34px; letter-spacing: -0.012em; }
       .chip .sep { opacity: 0.55; }
       .chip .native { font-weight: 500; letter-spacing: 0; opacity: 0.8; }
       .content { display: flex; flex-direction: column; align-items: center; margin-top: 26px; }
       .lyric { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 0.26em; row-gap: 0.02em;
-        max-width: 1640px; line-height: 1.25; font-weight: 800; text-align: center;
+        max-width: 1640px; line-height: 1.25; font-weight: 700; text-align: center;
         text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45); }
       .lyric .w { display: inline-block; white-space: nowrap; }
       .lyric .c { display: inline-block; }
       .lyric.tight { column-gap: 0; }
-      .f-en { font-family: "Inter", sans-serif; letter-spacing: -0.045em; }
-      .f-latin { font-family: "Inter", sans-serif; letter-spacing: -0.02em; }
-      .f-kk { font-family: "Inter", sans-serif; letter-spacing: -0.02em; }
+      .f-en { font-family: "Inter", sans-serif; letter-spacing: -0.028em; font-weight: 600; }
+      .f-latin { font-family: "Inter", sans-serif; letter-spacing: -0.012em; font-weight: 600; }
+      .f-kk { font-family: "Inter", sans-serif; letter-spacing: -0.012em; font-weight: 600; }
       .f-zh { font-family: "Noto Sans SC", "Inter", sans-serif; letter-spacing: 0.01em; }
       .f-ko { font-family: "Noto Sans KR", "Inter", sans-serif; letter-spacing: -0.01em; }
       .f-hi { font-family: "Noto Sans Devanagari", "Inter", sans-serif; }
@@ -74,7 +74,7 @@
       .roman { margin-top: 10px; font-family: "Inter", sans-serif; font-style: italic; font-weight: 500; letter-spacing: -0.01em; font-size: 36px; color: #e6dcff; opacity: 0; }
       .tr { margin-top: 26px; display: inline-flex; align-items: center; padding: 14px 34px; border-radius: 999px;
         background: rgba(14, 9, 38, 0.6); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.18);
-        font-family: "Inter", sans-serif; font-weight: 600; letter-spacing: -0.02em; font-size: 38px; color: #fff; opacity: 0; }
+        font-family: "Inter", sans-serif; font-weight: 500; letter-spacing: -0.012em; font-size: 38px; color: #fff; opacity: 0; }
 
       /* ---- journey track ---- */
       #track { position: absolute; left: 160px; top: 920px; width: 1600px; height: 90px; opacity: 0; }
@@ -84,41 +84,42 @@
       #track .stop { position: absolute; top: 5px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
         background: #2a2050; border: 3px solid rgba(255, 255, 255, 0.4); }
       #track .label { position: absolute; top: 36px; width: 200px; margin-left: -100px; text-align: center; white-space: nowrap;
-        font-family: var(--font-ui); font-weight: 600; font-size: 28px; letter-spacing: -0.02em; line-height: 1.2; color: rgba(255, 255, 255, 0.55); }
+        font-family: var(--font-ui); font-weight: 500; font-size: 28px; letter-spacing: -0.01em; line-height: 1.2; color: rgba(255, 255, 255, 0.55); }
       #traveler { position: absolute; top: -2px; left: 0; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%;
         background: radial-gradient(circle at 35% 35%, #fff 0%, var(--orange) 35%, var(--coral) 70%);
         box-shadow: 0 0 24px 6px rgba(254, 71, 100, 0.7); }
 
       /* ---- good-luck finale ---- */
       .luck { position: absolute; left: 0; top: 0; padding: 12px 28px; border-radius: 999px; white-space: nowrap;
-        font-family: var(--font-ui); font-weight: 700; letter-spacing: -0.02em; font-size: 34px; color: #fff;
+        font-family: var(--font-ui); font-weight: 600; letter-spacing: -0.012em; font-size: 34px; color: #fff;
         background: linear-gradient(135deg, rgba(91, 59, 255, 0.85), rgba(217, 70, 175, 0.85));
         box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.2); opacity: 0; }
       .luck.alt { background: linear-gradient(135deg, rgba(254, 71, 100, 0.9), rgba(255, 154, 74, 0.9)); }
-      #bigLuck { position: absolute; top: 680px; width: 1920px; text-align: center; font-weight: 800; font-size: 120px; line-height: 1.05; letter-spacing: -0.05em;
+      #bigLuck { position: absolute; top: 680px; width: 1920px; text-align: center; font-weight: 600; font-size: 120px; line-height: 1.05; letter-spacing: -0.032em;
         background: linear-gradient(90deg, #ffd166, #ff9a4a, #fe4764, #d946af); -webkit-background-clip: text; background-clip: text;
         color: transparent; opacity: 0; }
-      #bigLuckSub { position: absolute; top: 825px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 600; letter-spacing: -0.02em;
+      #bigLuckSub { position: absolute; top: 825px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 500; letter-spacing: -0.012em;
         font-size: 40px; color: #ffe7d6; opacity: 0; }
 
       /* ---- credits ---- */
-      #madeWith { position: absolute; top: 290px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 700;
-        font-size: 48px; letter-spacing: -0.035em; color: #ffd9c2; opacity: 0; }
-      .card { position: absolute; top: 380px; width: 500px; height: 260px; border-radius: 36px; padding: 34px 36px;
-        background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
-        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3), 0 3px 10px rgba(0, 0, 0, 0.18); opacity: 0; }
-      .card .icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
-        font-family: var(--font-ui); font-weight: 900; font-size: 34px; color: #fff; }
-      .card .name { margin-top: 22px; font-weight: 800; font-size: 50px; line-height: 1.05; letter-spacing: -0.045em; }
-      .card .role { margin-top: 10px; font-family: var(--font-ui); font-weight: 500; letter-spacing: -0.01em; font-size: 28px; color: rgba(255, 255, 255, 0.78); }
+      #madeWith { position: absolute; top: 290px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 600;
+        font-size: 48px; letter-spacing: -0.022em; color: #ffd9c2; opacity: 0; }
+      /* Credits: plain columns, no card container. */
+      .card { position: absolute; top: 400px; width: 500px; display: flex; flex-direction: column; align-items: center;
+        text-align: center; opacity: 0; }
+      .card .icon { width: 72px; height: 72px; color: #ffffff; }
+      .card .icon svg { width: 100%; height: 100%; display: block; }
+      .card .name { margin-top: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 38px; line-height: 1.2;
+        letter-spacing: -0.02em; color: #ffffff; }
+      .card .role { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 450; font-size: 38px; line-height: 1.2;
+        letter-spacing: -0.015em; color: rgba(255, 255, 255, 0.7); }
       #subs { position: absolute; top: 700px; left: 160px; width: 1600px; height: 160px; }
       .phrase { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center;
-        column-gap: 0.26em; font-family: var(--font-ui); font-weight: 700; letter-spacing: -0.035em; font-size: 50px; line-height: 1.3; opacity: 0; }
+        column-gap: 0.26em; font-family: var(--font-ui); font-weight: 600; letter-spacing: -0.022em; font-size: 50px; line-height: 1.3; opacity: 0; }
       .phrase .w { display: inline-block; color: rgba(255, 255, 255, 0.35); }
       .emoji { position: absolute; opacity: 0; visibility: hidden; filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35)); }
-      .card .icon .lot { width: 56px; height: 56px; }
       #attrib { position: absolute; top: 990px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 500;
-        font-size: 28px; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.72); opacity: 0; }
+        font-size: 28px; letter-spacing: -0.006em; color: rgba(255, 255, 255, 0.72); opacity: 0; }
       #fade { position: absolute; inset: 0; background: #000; opacity: 0; }
     </style>
   </head>
@@ -146,7 +147,7 @@
         <div id="traveler"></div>
       </div>
 
-      <div id="madeWith">Made with AI</div>
+      <div id="madeWith">Made with</div>
       <div id="cards" class="layer"></div>
       <div id="subs"></div>
       <div id="attrib">Animated emoji: Noto Emoji by Google (CC BY 4.0) · Fonts: Inter, Noto Sans (OFL)</div>
@@ -443,8 +444,6 @@
         });
         emoji("party_popper", 520, 735, 130, finale + 0.5, credits + 0.4);
         emoji("confetti_ball", 1400, 735, 130, finale + 0.7, credits + 0.4);
-        emoji("robot", 620, 314, 96, credits + 0.8, S.total);
-        emoji("clap", 1300, 314, 96, credits + 1.0, S.total);
 
         // Confetti on each section change and on the final word.
         S.sections.slice(1).forEach((sec) => {
@@ -495,21 +494,23 @@
 
         const nw = S.narration.words;
         const wordTime = (re, fallback) => (nw.find((w) => re.test(w.t)) || { s: fallback }).s;
-        const ICON = ["notes", "laptop", "clapper"];
-        const GRAD = ["#f3eeff", "#ffeef6", "#fff1e8"];
+        // Lucide icons (ISC licence, lucide.dev), drawn in white.
+        const LUCIDE = {
+          "audio-lines": '<path d="M2 10v3" /> <path d="M6 6v11" /> <path d="M10 3v18" /> <path d="M14 8v7" /> <path d="M18 5v13" /> <path d="M22 10v3" />',
+          "square-terminal": '<path d="m7 11 2-2-2-2" /> <path d="M11 13h4" /> <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />',
+          clapperboard: '<path d="m12.296 3.464 3.02 3.956" /> <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z" /> <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> <path d="m6.18 5.276 3.1 3.899" />',
+        };
+        const ICON = ["audio-lines", "square-terminal", "clapperboard"];
         const cardTimes = [wordTime(/ElevenLabs/i, credits + 3), wordTime(/^Claude/i, credits + 6), wordTime(/HyperFrames/i, credits + 9)];
         S.credits.forEach((c, i) => {
           const card = mk("div", "card", $("#cards"));
           card.style.left = `${160 + i * 550}px`;
           const ic = mk("div", "icon", card);
-          ic.style.background = GRAD[i];
-          lottieAnim(mk("div", "lot", ic), ICON[i]);
+          ic.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[ICON[i]]}</svg>`;
           mk("div", "name", card, c.name);
           mk("div", "role", card, c.role);
-          tl.fromTo(card, { opacity: 0, y: 80, rotation: i === 1 ? 0 : i === 0 ? -6 : 6, scale: 0.8 },
-            { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.7, ease: "back.out(1.8)" }, cardTimes[i] - 0.1);
-          tl.fromTo(card, { boxShadow: "0 0 48px 6px rgba(255,180,90,0.45), 0 18px 44px rgba(0,0,0,0.3)" },
-            { boxShadow: "0 0 0px 0px rgba(255,180,90,0), 0 18px 44px rgba(0,0,0,0.3)", duration: 1.2, immediateRender: false }, cardTimes[i] + 0.5);
+          tl.fromTo(card, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, cardTimes[i] - 0.1);
+          tl.fromTo(ic, { scale: 0.4, rotation: -12 }, { scale: 1, rotation: 0, duration: 0.8, ease: "back.out(2.2)" }, cardTimes[i] - 0.05);
         });
 
         // Narration subtitles, phrase by phrase, word-level highlight.
