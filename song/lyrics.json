@@ -1,0 +1,280 @@
+{
+  "title": "Semester Around the World",
+  "subtitle": "BDI 475 · ACCY 593",
+  "model_id": "music_v1",
+  "positive_global_styles": [
+    "jolly upbeat pop",
+    "light bouncy beat",
+    "ukulele and acoustic guitar",
+    "handclaps and finger snaps",
+    "glockenspiel sparkles",
+    "warm cheerful mixed-gender vocals",
+    "multilingual sing-along",
+    "124 bpm",
+    "major key",
+    "bright modern production"
+  ],
+  "negative_global_styles": [
+    "sad",
+    "dark",
+    "heavy distortion",
+    "metal",
+    "aggressive rap",
+    "slow ballad"
+  ],
+  "sections": [
+    {
+      "name": "Intro",
+      "duration_ms": 10000,
+      "styles": [
+        "playful ukulele intro",
+        "handclaps build",
+        "sung in English",
+        "excited and celebratory"
+      ],
+      "lines": [
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "Hey hey, B-D-I four-seventy-five!",
+          "display": "Hey hey, BDI 475!",
+          "en": ""
+        },
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "A-C-C-Y five-ninety-three, we came alive!",
+          "display": "ACCY 593, we came alive!",
+          "en": ""
+        },
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "What a semester, what a ride!",
+          "en": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 1",
+      "duration_ms": 14000,
+      "styles": [
+        "full light beat kicks in",
+        "sung in Mandarin Chinese then Vietnamese then Mexican Spanish",
+        "bouncy"
+      ],
+      "lines": [
+        {
+          "lang": "zh",
+          "language": "Mandarin",
+          "text": "这学期我们一起欢笑",
+          "roman": "zhè xuéqī wǒmen yìqǐ huānxiào",
+          "en": "This semester we laughed together"
+        },
+        {
+          "lang": "zh",
+          "language": "Mandarin",
+          "text": "数据和代码真奇妙",
+          "roman": "shùjù hé dàimǎ zhēn qímiào",
+          "en": "Data and code are so wonderful"
+        },
+        {
+          "lang": "vi",
+          "language": "Vietnamese",
+          "text": "Cùng nhau học, cùng nhau vui!",
+          "en": "Learning together, having fun together!"
+        },
+        {
+          "lang": "es",
+          "language": "Spanish (Mexico)",
+          "text": "¡Qué padre fue este semestre, compas!",
+          "en": "What an awesome semester, buddies!"
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "duration_ms": 12000,
+      "styles": [
+        "sung in Korean then French then Kazakh",
+        "glockenspiel accents",
+        "joyful"
+      ],
+      "lines": [
+        {
+          "lang": "ko",
+          "language": "Korean",
+          "text": "함께 배운 이 시간, 정말 즐거웠어",
+          "roman": "hamkke baeun i sigan, jeongmal jeulgeowosseo",
+          "en": "The time we learned together was so much fun"
+        },
+        {
+          "lang": "fr",
+          "language": "French",
+          "text": "Merci, les amis !",
+          "en": "Thank you, friends!"
+        },
+        {
+          "lang": "kk",
+          "language": "Kazakh",
+          "text": "Бірге оқыдық, бірге күлдік!",
+          "roman": "birge oqydyq, birge küldik",
+          "en": "We studied together, we laughed together!"
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "duration_ms": 14000,
+      "styles": [
+        "sung in Hindi then Saudi Arabic then Malay then Algerian Arabic",
+        "handclaps",
+        "festive"
+      ],
+      "lines": [
+        {
+          "lang": "hi",
+          "language": "Hindi",
+          "text": "साथ में सीखा, साथ में गाया",
+          "roman": "saath mein seekha, saath mein gaaya",
+          "en": "We learned together, we sang together"
+        },
+        {
+          "lang": "ar-SA",
+          "language": "Arabic (Saudi)",
+          "text": "والله كان ترم حلو مرة",
+          "roman": "wallah kān term ḥelw marra",
+          "en": "I swear, it was a really sweet semester",
+          "rtl": true
+        },
+        {
+          "lang": "ms",
+          "language": "Malay",
+          "text": "Semoga berjaya, kawan!",
+          "en": "Good luck, friends!"
+        },
+        {
+          "lang": "ar-DZ",
+          "language": "Algerian Arabic",
+          "text": "بالتوفيق يا لحباب!",
+          "roman": "bettawfiq ya lahbab",
+          "en": "Good luck, dear friends!",
+          "rtl": true
+        }
+      ]
+    },
+    {
+      "name": "Outro",
+      "duration_ms": 18000,
+      "styles": [
+        "sung in English",
+        "big happy sing-along finale",
+        "all four lines sung clearly at a relaxed pace",
+        "ends with a short ukulele tag and a bright final chord"
+      ],
+      "lines": [
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "So here's to you on the road ahead,",
+          "en": ""
+        },
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "Good luck on every journey, every step!",
+          "en": ""
+        },
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "B-D-I four-seventy-five, A-C-C-Y five-ninety-three,",
+          "display": "BDI 475, ACCY 593,",
+          "en": ""
+        },
+        {
+          "lang": "en",
+          "language": "English",
+          "text": "Keep shining bright, wherever you'll be!",
+          "en": ""
+        }
+      ]
+    }
+  ],
+  "narration": {
+    "voice_id": "vChnJZ1Cu89g2XXumPfT",
+    "model_id": "eleven_multilingual_v2",
+    "text": "This video was generated with A.I. The song and this narration were created with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!"
+  },
+  "languages": {
+    "en": {
+      "native": "English",
+      "good_luck": "Good luck!",
+      "short": "English"
+    },
+    "zh": {
+      "native": "普通话",
+      "good_luck": "祝你好运！",
+      "short": "中文"
+    },
+    "vi": {
+      "native": "Tiếng Việt",
+      "good_luck": "Chúc may mắn!",
+      "short": "Tiếng Việt"
+    },
+    "es": {
+      "native": "Español (México)",
+      "good_luck": "¡Mucha suerte!",
+      "short": "Español"
+    },
+    "ko": {
+      "native": "한국어",
+      "good_luck": "행운을 빌어요!",
+      "short": "한국어"
+    },
+    "fr": {
+      "native": "Français",
+      "good_luck": "Bonne chance !",
+      "short": "Français"
+    },
+    "kk": {
+      "native": "Қазақ тілі",
+      "good_luck": "Сәттілік!",
+      "short": "Қазақша"
+    },
+    "hi": {
+      "native": "हिन्दी",
+      "good_luck": "शुभकामनाएँ!",
+      "short": "हिन्दी"
+    },
+    "ar-SA": {
+      "native": "العربية (السعودية)",
+      "good_luck": "بالتوفيق!",
+      "short": "العربية"
+    },
+    "ms": {
+      "native": "Bahasa Melayu",
+      "good_luck": "Semoga berjaya!",
+      "short": "Melayu"
+    },
+    "ar-DZ": {
+      "native": "الدارجة الجزائرية",
+      "good_luck": "ربي يوفقكم!",
+      "short": "الدارجة"
+    }
+  },
+  "credits": [
+    {
+      "name": "ElevenLabs API",
+      "role": "Song, vocals & narration"
+    },
+    {
+      "name": "Claude Code",
+      "role": "Lyrics, code & workflow"
+    },
+    {
+      "name": "HyperFrames",
+      "role": "Video composition & rendering"
+    }
+  ]
+}

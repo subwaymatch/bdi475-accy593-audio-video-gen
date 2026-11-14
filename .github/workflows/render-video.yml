@@ -1,0 +1,129 @@
+name: Render video
+
+# Renders the HyperFrames composition in video/ to MP4.
+# - Pull requests: render and upload the MP4 as a workflow artifact (no release).
+# - Pushes to main / manual runs: render and publish the MP4 as a GitHub Release.
+# - Manual runs can also regenerate the song + narration with the ElevenLabs API
+#   (needs the ELEVENLABS_API_KEY repository secret).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "video/**"
+      - "song/**"
+      - "scripts/**"
+      - ".github/workflows/render-video.yml"
+  pull_request:
+    paths:
+      - "video/**"
+      - "song/**"
+      - "scripts/**"
+      - ".github/workflows/render-video.yml"
+  workflow_dispatch:
+    inputs:
+      regenerate_audio:
+        description: "Regenerate the song and narration with the ElevenLabs API (uses credits; needs ELEVENLABS_API_KEY secret)"
+        type: boolean
+        default: false
+      release_tag:
+        description: "Release tag (default: video-<date>-<sha>)"
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HYPERFRAMES_VERSION: 0.9.47
+  HYPERFRAMES_SKIP_SKILLS: "1"
+  OUTPUT: out/semester-around-the-world.mp4
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg -version | head -1
+
+      - name: Install headless Chrome for HyperFrames
+        run: |
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} telemetry disable || true
+          line=$(npx --yes @puppeteer/browsers install chrome-headless-shell@stable --path "$RUNNER_TEMP/browsers" | tail -1)
+          bin="${line#* }"
+          if [ -x "$bin" ]; then
+            echo "HYPERFRAMES_BROWSER_PATH=$bin" >> "$GITHUB_ENV"
+            echo "Using $bin"
+          else
+            echo "chrome-headless-shell not found, falling back to system Chrome"
+          fi
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} doctor || true
+
+      - name: Regenerate song and narration (ElevenLabs)
+        if: github.event_name == 'workflow_dispatch' && inputs.regenerate_audio
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          if [ -z "$ELEVENLABS_API_KEY" ]; then
+            echo "::error::Set the ELEVENLABS_API_KEY repository secret to regenerate audio."
+            exit 1
+          fi
+          node scripts/generate-audio.mjs
+          pip install -q fonttools brotli
+          python3 scripts/fonts.py
+
+      - name: Build caption timeline
+        run: node scripts/build-timeline.mjs
+
+      - name: Lint composition
+        working-directory: video
+        run: npx --yes hyperframes@${HYPERFRAMES_VERSION} lint
+
+      - name: Render MP4
+        working-directory: video
+        run: |
+          mkdir -p ../out
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} render -o "../${OUTPUT}" --workers 4
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of compact "../${OUTPUT}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: semester-around-the-world
+          path: |
+            ${{ env.OUTPUT }}
+            video/assets/song.mp3
+            video/assets/narration.mp3
+          if-no-files-found: error
+
+      - name: Publish release
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_TAG: ${{ inputs.release_tag }}
+        run: |
+          tag="${INPUT_TAG:-video-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}}"
+          node scripts/release-notes.mjs > "$RUNNER_TEMP/notes.md"
+          cp video/assets/song.mp3 out/song.mp3
+          gh release create "$tag" "$OUTPUT" out/song.mp3 \
+            --target "$GITHUB_SHA" \
+            --title "Semester Around the World — BDI 475 · ACCY 593 ($tag)" \
+            --notes-file "$RUNNER_TEMP/notes.md"

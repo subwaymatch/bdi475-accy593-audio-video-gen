@@ -1,0 +1,4 @@
+.font-cache/
+out/
+node_modules/
+video/.hyperframes/

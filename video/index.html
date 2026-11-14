@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semester Around the World — BDI 475 · ACCY 593</title>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="timeline.js"></script>
+    <style>
+      @font-face { font-family: "Baloo 2"; src: url("assets/fonts/Baloo2.woff2") format("woff2"); font-weight: 400 800; }
+      @font-face { font-family: "Nunito"; src: url("assets/fonts/Nunito.woff2") format("woff2"); font-weight: 200 1000; }
+      @font-face { font-family: "ZCOOL KuaiLe"; src: url("assets/fonts/ZCOOLKuaiLe.woff2") format("woff2"); }
+      @font-face { font-family: "Jua"; src: url("assets/fonts/Jua.woff2") format("woff2"); }
+      @font-face { font-family: "Baloo Bhaijaan 2"; src: url("assets/fonts/BalooBhaijaan2.woff2") format("woff2"); font-weight: 400 800; }
+
+      :root {
+        --ground: #0e0a26;
+        --ink: #ffffff;
+        --violet: #5b3bff;
+        --purple: #a33ed9;
+        --magenta: #d946af;
+        --coral: #fe4764;
+        --orange: #ff9a4a;
+        --font-ui: "Nunito", "Baloo 2", "ZCOOL KuaiLe", "Jua", "Baloo Bhaijaan 2", sans-serif;
+        --font-display: "Baloo 2", "Nunito", "ZCOOL KuaiLe", "Jua", "Baloo Bhaijaan 2", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root {
+        position: relative; width: 1920px; height: 1080px; overflow: hidden;
+        background: radial-gradient(ellipse 80% 70% at 50% 45%, #2b1566 0%, #170f3d 55%, var(--ground) 100%);
+        color: var(--ink); font-family: var(--font-display);
+      }
+      .layer { position: absolute; inset: 0; pointer-events: none; }
+
+      /* ---- background ---- */
+      .blob { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; opacity: 0.5; mix-blend-mode: screen; }
+      .shape { position: absolute; border-radius: 28%; opacity: 0.22; }
+      .ring { position: absolute; left: 960px; top: 470px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
+        border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.5); opacity: 0; }
+      .ghost { position: absolute; top: 330px; left: 0; white-space: nowrap; font-family: var(--font-display);
+        font-weight: 800; font-size: 300px; line-height: 1; color: #fff; opacity: 0; }
+      .confetto { position: absolute; left: 0; top: 0; width: 18px; height: 10px; border-radius: 3px; opacity: 0; }
+      .confetto.round { width: 14px; height: 14px; border-radius: 50%; }
+
+      /* ---- logo & title ---- */
+      #logoWrap { position: absolute; left: 510px; top: 110px; width: 900px; height: 442px; transform-origin: 0 0; }
+      #logoPulse { width: 100%; height: 100%; }
+      #logo { width: 100%; height: 100%; display: block; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.35)); }
+      #title { position: absolute; top: 560px; width: 1920px; text-align: center; font-family: var(--font-ui);
+        font-weight: 800; font-size: 40px; letter-spacing: 0.04em; color: #ffd9c2; opacity: 0; }
+
+      /* ---- lyric lines ---- */
+      .line { position: absolute; left: 0; width: 1920px; display: flex; flex-direction: column; align-items: center; opacity: 0; visibility: hidden; }
+      .chip { display: inline-flex; align-items: center; gap: 14px; padding: 10px 28px 10px 18px; border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12); border: 2px solid rgba(255, 255, 255, 0.25);
+        font-family: var(--font-ui); font-weight: 800; font-size: 30px; letter-spacing: 0.06em; white-space: nowrap; }
+      .chip .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
+      .chip .native { font-weight: 700; letter-spacing: 0; opacity: 0.85; }
+      .content { display: flex; flex-direction: column; align-items: center; margin-top: 26px; }
+      .lyric { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: 0.26em; row-gap: 0.02em;
+        max-width: 1700px; line-height: 1.22; font-weight: 800; text-align: center;
+        text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45); }
+      .lyric .w { display: inline-block; white-space: nowrap; }
+      .lyric .c { display: inline-block; }
+      .lyric.tight { column-gap: 0; }
+      .f-latin { font-family: "Baloo 2", "Nunito", sans-serif; }
+      .f-zh { font-family: "ZCOOL KuaiLe", "Baloo 2", sans-serif; font-weight: 400; }
+      .f-ko { font-family: "Jua", "Baloo 2", sans-serif; font-weight: 400; }
+      .f-kk { font-family: "Nunito", sans-serif; font-weight: 900; }
+      .f-hi { font-family: "Baloo 2", sans-serif; }
+      .f-ar { font-family: "Baloo Bhaijaan 2", sans-serif; }
+      .roman { margin-top: 6px; font-family: "Nunito", sans-serif; font-style: italic; font-weight: 600; font-size: 36px; color: #e6dcff; opacity: 0; }
+      .tr { margin-top: 26px; display: inline-flex; align-items: center; gap: 18px; padding: 14px 34px 14px 16px; border-radius: 999px;
+        background: rgba(10, 6, 30, 0.55); border: 2px solid rgba(255, 255, 255, 0.18);
+        font-family: "Nunito", sans-serif; font-weight: 700; font-size: 40px; color: #fff; opacity: 0; }
+      .tr .tag { font-weight: 900; font-size: 24px; letter-spacing: 0.1em; color: #1b0f3a; background: var(--accent);
+        border-radius: 999px; padding: 6px 14px; }
+
+      /* ---- journey track ---- */
+      #track { position: absolute; left: 160px; top: 990px; width: 1600px; height: 90px; opacity: 0; }
+      #track .rail { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.16); }
+      #track .fill { position: absolute; left: 0; top: 11px; width: 1600px; height: 6px; border-radius: 3px; transform-origin: 0 50%;
+        background: linear-gradient(90deg, var(--violet), var(--magenta), var(--coral), var(--orange)); transform: scaleX(0); }
+      #track .stop { position: absolute; top: 5px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
+        background: #2a2050; border: 3px solid rgba(255, 255, 255, 0.4); }
+      #track .label { position: absolute; top: 36px; width: 200px; margin-left: -100px; text-align: center; white-space: nowrap;
+        font-family: var(--font-ui); font-weight: 800; font-size: 28px; line-height: 1.2; color: rgba(255, 255, 255, 0.55); }
+      #traveler { position: absolute; top: -2px; left: 0; width: 32px; height: 32px; margin-left: -16px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff 0%, var(--orange) 35%, var(--coral) 70%);
+        box-shadow: 0 0 24px 6px rgba(254, 71, 100, 0.7); }
+
+      /* ---- good-luck finale ---- */
+      .luck { position: absolute; left: 0; top: 0; padding: 12px 28px; border-radius: 999px; white-space: nowrap;
+        font-family: var(--font-ui); font-weight: 800; font-size: 34px; color: #fff;
+        background: linear-gradient(135deg, rgba(91, 59, 255, 0.85), rgba(217, 70, 175, 0.85));
+        border: 2px solid rgba(255, 255, 255, 0.35); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); opacity: 0; }
+      .luck.alt { background: linear-gradient(135deg, rgba(254, 71, 100, 0.9), rgba(255, 154, 74, 0.9)); }
+      #bigLuck { position: absolute; top: 760px; width: 1920px; text-align: center; font-weight: 800; font-size: 120px; line-height: 1;
+        background: linear-gradient(90deg, #ffd166, #ff9a4a, #fe4764, #d946af); -webkit-background-clip: text; background-clip: text;
+        color: transparent; opacity: 0; }
+      #bigLuckSub { position: absolute; top: 895px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 800;
+        font-size: 40px; color: #ffe7d6; opacity: 0; }
+
+      /* ---- credits ---- */
+      #madeWith { position: absolute; top: 330px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 900;
+        font-size: 44px; letter-spacing: 0.16em; color: #ffd9c2; opacity: 0; }
+      .card { position: absolute; top: 420px; width: 500px; height: 260px; border-radius: 36px; padding: 34px 36px;
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+        border: 2px solid rgba(255, 255, 255, 0.25); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); opacity: 0; }
+      .card .icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-ui); font-weight: 900; font-size: 34px; color: #fff; }
+      .card .name { margin-top: 22px; font-weight: 800; font-size: 54px; line-height: 1.05; }
+      .card .role { margin-top: 10px; font-family: var(--font-ui); font-weight: 700; font-size: 28px; color: rgba(255, 255, 255, 0.78); }
+      #subs { position: absolute; top: 770px; left: 160px; width: 1600px; height: 160px; }
+      .phrase { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center;
+        column-gap: 0.3em; font-family: var(--font-ui); font-weight: 800; font-size: 50px; line-height: 1.3; opacity: 0; }
+      .phrase .w { display: inline-block; color: rgba(255, 255, 255, 0.35); }
+      #fade { position: absolute; inset: 0; background: #000; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="84.1" data-width="1920" data-height="1080">
+      <audio id="song" src="assets/song.mp3" data-start="0" data-duration="66.6" data-volume="1" data-fade-out="0.3"></audio>
+      <audio id="narration" src="assets/narration.mp3" data-start="67.2" data-duration="14.341" data-volume="1"></audio>
+
+      <div id="bgLayer" class="layer" data-layout-ignore><div id="blobs" class="layer"></div></div>
+      <div id="ghosts" class="layer" data-layout-ignore></div>
+      <div id="pulse" class="layer" data-layout-ignore><div id="shapes" class="layer"></div></div>
+      <div id="rings" class="layer" data-layout-ignore></div>
+
+      <div id="logoWrap"><div id="logoPulse"><img id="logo" src="assets/logo.svg" alt="BDI 475 logo" /></div></div>
+      <div id="title"></div>
+
+      <div id="stage" class="layer"></div>
+      <div id="luckLayer" class="layer"></div>
+      <div id="bigLuck"></div>
+      <div id="bigLuckSub"></div>
+
+      <div id="track">
+        <div class="rail"></div>
+        <div class="fill"></div>
+        <div id="traveler"></div>
+      </div>
+
+      <div id="madeWith">MADE WITH AI ✦</div>
+      <div id="cards" class="layer"></div>
+      <div id="subs"></div>
+      <div id="confetti" class="layer" data-layout-ignore></div>
+      <div id="fade"></div>
+    </div>
+
+    <script>
+      (() => {
+        const S = window.SONG;
+        const $ = (sel) => document.querySelector(sel);
+        const tl = gsap.timeline({ paused: true });
+
+        // Deterministic PRNG (renders must be reproducible frame by frame).
+        let seed = 475593;
+        const rnd = () => {
+          seed = (seed + 0x6d2b79f5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+        const R = (a, b) => a + (b - a) * rnd();
+        const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
+        const mk = (tag, cls, parent, text) => {
+          const e = document.createElement(tag);
+          if (cls) e.className = cls;
+          if (text != null) e.textContent = text;
+          parent.appendChild(e);
+          return e;
+        };
+
+        const PAL = ["#5b3bff", "#a33ed9", "#d946af", "#fe4764", "#ff9a4a", "#ffd166"];
+        const ACCENT = { en: "#ffb547", zh: "#ff5c7a", vi: "#ffd166", es: "#ff7a45", ko: "#7ad7ff", fr: "#b8a2ff",
+          kk: "#5ee3c1", hi: "#ff9a4a", "ar-SA": "#7cf29a", ms: "#ffd166", "ar-DZ": "#ff7ab8" };
+        const FONT = { zh: "f-zh", ko: "f-ko", kk: "f-kk", hi: "f-hi", "ar-SA": "f-ar", "ar-DZ": "f-ar" };
+        const EM = { "f-zh": 1.02, "f-ko": 0.95, "f-kk": 0.6, "f-hi": 0.58, "f-ar": 0.5, "f-latin": 0.5 };
+        const STYLE = { en: "karaoke", zh: "drop", vi: "rise", es: "stamp", ko: "pop", fr: "swirl", kk: "slide",
+          hi: "glow", "ar-SA": "blur", ms: "wave", "ar-DZ": "pop" };
+        const songEnd = S.songEnd;
+        const finale = S.lines.at(-1).end + 0.25; // logo returns centre stage
+        const credits = S.narrationStart - 0.3;
+
+        // ---------------------------------------------------------------- runs of one language
+        const runs = [];
+        S.lines.forEach((l) => {
+          const last = runs.at(-1);
+          if (last && last.lang === l.lang && last.section === l.section) last.lines.push(l);
+          else runs.push({ lang: l.lang, section: l.section, language: l.language, native: l.native, lines: [l] });
+        });
+        S.lines.forEach((l, i) => {
+          const prev = S.lines[i - 1];
+          l.show = Math.min(l.start + 0.1, Math.max(0.2, l.start - 0.3, prev ? prev.end + 0.12 : 0));
+        });
+        S.lines.forEach((l, i) => {
+          const next = S.lines[i + 1];
+          l.hide = next ? Math.min(next.show, l.end + 2.2) : finale;
+          l.run = runs.find((r) => r.lines.includes(l));
+          l.first = l.run.lines[0] === l;
+          l.continues = !!next && next.lang === l.lang && next.section === l.section && next.show <= l.hide + 0.01;
+        });
+        runs.forEach((r, i) => {
+          r.start = r.lines[0].show;
+          r.end = runs[i + 1] ? runs[i + 1].start : finale;
+        });
+
+        // ---------------------------------------------------------------- background blobs
+        const blobs = $("#blobs");
+        const blobSpec = [
+          { c: "#5b3bff", x: -250, y: -350 }, { c: "#a33ed9", x: 1150, y: -450 }, { c: "#d946af", x: 1250, y: 450 },
+          { c: "#fe4764", x: -300, y: 500 }, { c: "#ff9a4a", x: 450, y: 650 },
+        ];
+        blobSpec.forEach((b, i) => {
+          const d = mk("div", "blob", blobs);
+          d.style.background = `radial-gradient(circle, ${b.c} 0%, ${b.c}88 30%, transparent 66%)`;
+          gsap.set(d, { x: b.x, y: b.y });
+          const dur = 7 + i * 1.3;
+          tl.to(d, { x: b.x + R(-260, 260), y: b.y + R(-200, 200), scale: R(0.85, 1.25), duration: dur, ease: "sine.inOut",
+            yoyo: true, repeat: Math.ceil(S.total / dur) }, 0);
+        });
+        // Hue drift per language run, staying in the logo's violet→orange family.
+        const HUES = [0, 22, -18, 30, -30, 14, -24, 28, -14, 18, -8, 0];
+        runs.forEach((r, i) => tl.to(blobs, { filter: `hue-rotate(${HUES[i % HUES.length]}deg)`, duration: 1.2, ease: "sine.inOut" }, r.start));
+
+        // Floating rounded "logo blocks".
+        const shapes = $("#shapes");
+        for (let i = 0; i < 16; i++) {
+          const s = mk("div", "shape", shapes);
+          const size = R(50, 170);
+          const c1 = pick(PAL), c2 = pick(PAL);
+          Object.assign(s.style, { width: `${size}px`, height: `${size * R(0.9, 1.25)}px`, left: `${R(-40, 1880)}px`,
+            top: `${R(-40, 1040)}px`, background: `linear-gradient(${Math.floor(R(0, 360))}deg, ${c1}, ${c2})` });
+          gsap.set(s, { rotation: R(-30, 30) });
+          const dur = R(6, 11);
+          tl.to(s, { x: R(-140, 140), y: R(-120, 120), rotation: `+=${R(-90, 90)}`, duration: dur, ease: "sine.inOut",
+            yoyo: true, repeat: Math.ceil(S.total / dur) }, 0);
+        }
+
+        // Beat pulses: a gentle bounce on every beat, a ring ripple on every other beat.
+        const rings = [0, 1, 2].map(() => mk("div", "ring", $("#rings")));
+        S.beats.forEach((b, i) => {
+          tl.fromTo("#pulse", { scale: 1.025 }, { scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, b);
+          if (i % 2 === 0) {
+            const ring = rings[(i / 2) % 3];
+            tl.fromTo(ring, { scale: 0.55, opacity: 0.3 }, { scale: 1.35, opacity: 0, duration: 1.4, ease: "power1.out", immediateRender: false }, b);
+          }
+        });
+
+        // Huge, faint native-language word drifting behind each run.
+        const ghosts = $("#ghosts");
+        runs.forEach((r) => {
+          const g = mk("div", "ghost", ghosts, r.lang === "en" ? "ENGLISH" : r.native);
+          if (FONT[r.lang]) g.classList.add(FONT[r.lang]);
+          const dur = r.end - r.start + 0.6;
+          tl.fromTo(g, { x: 1950, opacity: 0.045 }, { x: -1600, duration: dur, ease: "none" }, r.start);
+          tl.set(g, { opacity: 0 }, r.start + dur);
+        });
+
+        // ---------------------------------------------------------------- confetti
+        const confettiLayer = $("#confetti");
+        function burst(t, cx, cy, n = 40, power = 1) {
+          for (let i = 0; i < n; i++) {
+            const p = mk("div", rnd() < 0.35 ? "confetto round" : "confetto", confettiLayer);
+            p.style.background = pick(PAL);
+            const ang = R(-Math.PI, 0);
+            const v = R(300, 750) * power;
+            const dx = Math.cos(ang) * v, up = Math.sin(ang) * v * 0.9;
+            const fall = R(500, 900);
+            const life = R(1.6, 2.4);
+            gsap.set(p, { x: cx, y: cy, opacity: 0 });
+            tl.set(p, { opacity: 1 }, t);
+            tl.to(p, { x: cx + dx, duration: life, ease: "power2.out" }, t);
+            tl.to(p, { y: cy + up, duration: life * 0.35, ease: "power2.out" }, t);
+            tl.to(p, { y: cy + up + fall, duration: life * 0.65, ease: "power1.in" }, t + life * 0.35);
+            tl.to(p, { rotation: R(-720, 720), duration: life, ease: "none" }, t);
+            tl.to(p, { opacity: 0, duration: 0.4 }, t + life - 0.4);
+          }
+        }
+
+        // ---------------------------------------------------------------- logo + title
+        $("#title").textContent = `♪  ${S.title}  ·  ${S.subtitle}  ♪`;
+        tl.fromTo("#logo", { scale: 0.86, rotation: -3 }, { scale: 1, rotation: 0, duration: 1.1, ease: "elastic.out(1, 0.5)" }, 0.05);
+        gsap.set("#title", { opacity: 1 });
+        S.beats.filter((b) => b < S.lines[3].show - 0.3).forEach((b, i) => {
+          if (i % 2 === 0) tl.fromTo("#logoPulse", { scale: 1.04 }, { scale: 1, duration: 0.45, ease: "power2.out", immediateRender: false }, b);
+        });
+        const toBadge = S.lines[3].show - 0.9; // before the first non-English line
+        tl.to("#title", { opacity: 0, y: -20, duration: 0.4 }, toBadge - 0.2);
+        tl.to("#logoWrap", { x: -466, y: -80, scale: 0.24, duration: 0.9, ease: "power3.inOut" }, toBadge);
+        burst(0.55, 960, 560, 50, 1.1);
+
+        // ---------------------------------------------------------------- journey track
+        const track = $("#track");
+        const stopX = (i) => (1600 * i) / (runs.length - 1);
+        runs.forEach((r, i) => {
+          const stop = mk("div", "stop", track);
+          stop.style.left = `${stopX(i)}px`;
+          const lab = mk("div", "label", track, S.languages[r.lang]?.short ?? r.language);
+          if (FONT[r.lang]) lab.classList.add(FONT[r.lang]);
+          lab.style.left = `${stopX(i)}px`;
+          lab.style.top = i % 2 ? "-44px" : "34px";
+          r.stopEl = stop;
+          r.labelEl = lab;
+        });
+        track.appendChild($("#traveler"));
+        tl.fromTo(track, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.8);
+        runs.forEach((r, i) => {
+          const t = r.start;
+          tl.to("#traveler", { x: stopX(i), duration: i === 0 ? 0.01 : 0.7, ease: "back.inOut(1.6)" }, t);
+          tl.to("#track .fill", { scaleX: i / (runs.length - 1), duration: 0.7, ease: "power2.inOut" }, t);
+          tl.to(r.stopEl, { backgroundColor: ACCENT[r.lang], borderColor: "#ffffff", scale: 1.3, duration: 0.3 }, t + 0.5);
+          tl.to(r.labelEl, { color: "#ffffff", scale: 1.15, y: 2, duration: 0.3 }, t + 0.5);
+          if (i < runs.length - 1) tl.to(r.labelEl, { scale: 1, y: 0, color: "rgba(255,255,255,0.8)", duration: 0.3 }, runs[i + 1].start + 0.4);
+        });
+        tl.to(track, { opacity: 0, y: 40, duration: 0.6, ease: "power2.in" }, finale);
+
+        // ---------------------------------------------------------------- lyric lines
+        const stage = $("#stage");
+        S.lines.forEach((l) => {
+          const accent = ACCENT[l.lang] || "#ffb547";
+          const style = STYLE[l.lang] || "pop";
+          const font = FONT[l.lang] || "f-latin";
+          const box = mk("div", "line", stage);
+          box.style.setProperty("--accent", accent);
+          box.style.top = `${l.section === 0 ? 620 : 300}px`;
+
+          const chip = mk("div", "chip", box);
+          mk("span", "dot", chip);
+          mk("span", "", chip, l.language.toUpperCase());
+          if (l.native && l.native !== l.language && l.lang !== "en") {
+            mk("span", "", chip, "·");
+            const n = mk("span", "native", chip, l.native);
+            if (FONT[l.lang]) n.classList.add(FONT[l.lang]);
+          }
+
+          const content = mk("div", "content", box);
+          const lyr = mk("div", `lyric ${font}`, content);
+          if (l.rtl) lyr.dir = "rtl";
+          if (l.lang === "zh") lyr.classList.add("tight");
+          const chars = [...l.text].length;
+          const size = Math.round(Math.max(72, Math.min(l.section === 0 ? 104 : 128, 1640 / (chars * EM[font]))));
+          lyr.style.fontSize = `${size}px`;
+
+          const spans = l.words.map((w, wi) => {
+            const s = mk("span", "w", lyr);
+            if (style === "swirl" || style === "wave") {
+              [...w.t].forEach((ch) => mk("span", "c", s, ch));
+            } else s.textContent = w.t;
+            return s;
+          });
+
+          let roman = null, tr = null;
+          if (l.roman) roman = mk("div", "roman", content, l.roman);
+          if (l.en) {
+            tr = mk("div", "tr", content);
+            mk("span", "tag", tr, "EN");
+            mk("span", "", tr, l.en);
+          }
+
+          // Show / hide.
+          tl.set(box, { autoAlpha: 1 }, l.show);
+          if (l.first) tl.fromTo(chip, { opacity: 0, y: -30, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, l.show);
+          tl.to(content, { opacity: 0, y: -50, duration: 0.24, ease: "power2.in" }, l.hide - 0.24);
+          if (!l.continues) tl.to(chip, { opacity: 0, y: -20, duration: 0.22 }, l.hide - 0.22);
+          tl.set(box, { autoAlpha: 0 }, l.hide);
+          if (roman) tl.fromTo(roman, { opacity: 0, y: 16 }, { opacity: 0.85, y: 0, duration: 0.4 }, l.show + 0.05);
+          if (tr) tl.fromTo(tr, { opacity: 0, y: 26, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2)" }, l.show + 0.05);
+
+          // Word entrances — a different motion language for each language.
+          l.words.forEach((w, wi) => {
+            const s = spans[wi];
+            const t = Math.max(l.show + 0.05, w.s - 0.06);
+            switch (style) {
+              case "karaoke":
+                gsap.set(s, { opacity: 0.28 });
+                tl.to(s, { opacity: 1, color: accent, scale: 1.14, y: -10, duration: 0.12, ease: "power2.out" }, t);
+                tl.to(s, { color: "#ffffff", scale: 1, y: 0, duration: 0.3, ease: "power2.inOut" }, Math.max(t + 0.14, w.e));
+                break;
+              case "drop":
+                tl.fromTo(s, { y: -220, opacity: 0, rotation: R(-30, 30) }, { y: 0, opacity: 1, rotation: 0, duration: 0.55, ease: "bounce.out" }, t - 0.12);
+                break;
+              case "rise":
+                tl.fromTo(s, { y: 110, opacity: 0, rotation: -10 }, { y: 0, opacity: 1, rotation: 0, duration: 0.45, ease: "back.out(2.2)" }, t);
+                break;
+              case "stamp":
+                tl.fromTo(s, { scale: 2.8, opacity: 0, rotation: R(-14, 14) }, { scale: 1, opacity: 1, rotation: R(-4, 4), duration: 0.24, ease: "power3.in" }, t - 0.1);
+                break;
+              case "pop":
+                tl.fromTo(s, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "elastic.out(1, 0.45)" }, t);
+                break;
+              case "slide": {
+                const dir = wi % 2 ? 1 : -1;
+                tl.fromTo(s, { x: 520 * dir, opacity: 0, skewX: -25 * dir }, { x: 0, opacity: 1, skewX: 0, duration: 0.5, ease: "power3.out" }, t);
+                break;
+              }
+              case "glow":
+                tl.fromTo(s, { opacity: 0, scale: 1.35, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, t);
+                break;
+              case "blur":
+                tl.fromTo(s, { opacity: 0, x: 90, filter: "blur(12px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, t);
+                break;
+              case "swirl":
+                [...s.children].forEach((c, ci) =>
+                  tl.fromTo(c, { x: R(-320, 320), y: R(-220, 220), rotation: R(-360, 360), opacity: 0 },
+                    { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, t + ci * 0.03));
+                break;
+              case "wave":
+                [...s.children].forEach((c, ci) => {
+                  tl.fromTo(c, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(3)" }, t + ci * 0.035);
+                  tl.to(c, { y: -16, duration: 0.22, ease: "sine.out", yoyo: true, repeat: 1 }, t + 0.45 + ci * 0.035);
+                });
+                break;
+            }
+            // Accent flash while the word is being sung.
+            if (style !== "karaoke") {
+              tl.fromTo(s, { color: accent }, { color: "#ffffff", duration: 0.5, ease: "power1.in", immediateRender: false }, Math.max(t + 0.2, w.e));
+              gsap.set(s, { color: accent });
+            }
+          });
+        });
+
+        // Confetti on each section change and on the final word.
+        S.sections.slice(1).forEach((sec) => {
+          const firstLine = S.lines.find((l) => l.section === S.sections.indexOf(sec));
+          if (firstLine) burst(firstLine.start, R(500, 1420), 980, 34, 1);
+        });
+
+        // ---------------------------------------------------------------- outro: good luck in every language
+        const luckLayer = $("#luckLayer");
+        const outroStart = runs.at(-1).start;
+        const luckLangs = Object.keys(S.languages).filter((k) => k !== "en");
+        const topSlots = [[430, 150], [820, 120], [1220, 150], [1600, 120], [1650, 230]];
+        const botSlots = [[260, 830], [620, 860], [980, 830], [1340, 860], [1690, 830], [300, 720]];
+        const slots = [...topSlots, ...botSlots];
+        const lucks = luckLangs.map((k, i) => {
+          const p = mk("div", i % 2 ? "luck alt" : "luck", luckLayer, S.languages[k].good_luck);
+          if (FONT[k]) p.classList.add(FONT[k]);
+          if (k.startsWith("ar")) p.dir = "rtl";
+          const [x, y] = slots[i];
+          gsap.set(p, { x, y, xPercent: -50, yPercent: -50, opacity: 0, scale: 0 });
+          const beat = S.beats.find((b) => b >= outroStart + i * 0.48) ?? outroStart + i * 0.48;
+          tl.to(p, { opacity: 1, scale: 0.8, duration: 0.5, ease: "back.out(2.5)" }, beat);
+          tl.to(p, { y: y - 14, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 5 }, beat + 0.5);
+          return p;
+        });
+        // Finale: logo back to centre stage, the wishes orbit around it.
+        tl.to("#logoWrap", { x: 45, y: 40, scale: 0.9, duration: 1.0, ease: "power3.inOut" }, finale);
+        lucks.forEach((p, i) => {
+          const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
+          tl.to(p, { x: 960 + Math.cos(a) * 790, y: 365 + Math.sin(a) * 285, scale: 1, duration: 0.9, ease: "power3.inOut" }, finale + 0.05 * i);
+        });
+        tl.fromTo("#bigLuck", { opacity: 0, scale: 0.6, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(2)" }, finale + 0.4);
+        tl.fromTo("#bigLuckSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, finale + 0.8);
+        $("#bigLuck").textContent = "Good luck!";
+        $("#bigLuckSub").textContent = "on all your journeys ahead ✦";
+        burst(finale + 0.3, 960, 800, 60, 1.3);
+        burst(finale + 0.9, 420, 900, 36, 1.1);
+        burst(finale + 1.3, 1500, 900, 36, 1.1);
+
+        // ---------------------------------------------------------------- credits + narration
+        lucks.forEach((p, i) => {
+          const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
+          tl.to(p, { x: 960 + Math.cos(a) * 1500, y: 345 + Math.sin(a) * 900, opacity: 0, duration: 0.8, ease: "power2.in" }, credits);
+        });
+        tl.to(["#bigLuck", "#bigLuckSub"], { opacity: 0, y: -30, duration: 0.5 }, credits);
+        tl.to("#logoWrap", { x: 202.5, y: -60, scale: 0.55, duration: 1.0, ease: "power3.inOut" }, credits);
+        tl.fromTo("#madeWith", { opacity: 0, scale: 1.4, y: -10 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out" }, credits + 0.6);
+
+        const nw = S.narration.words;
+        const wordTime = (re, fallback) => (nw.find((w) => re.test(w.t)) || { s: fallback }).s;
+        const ICON = ["♪", "✦", "▶"];
+        const GRAD = ["linear-gradient(135deg,#5b3bff,#a33ed9)", "linear-gradient(135deg,#d946af,#fe4764)", "linear-gradient(135deg,#fe4764,#ff9a4a)"];
+        const cardTimes = [wordTime(/ElevenLabs/i, credits + 3), wordTime(/^Claude/i, credits + 6), wordTime(/HyperFrames/i, credits + 9)];
+        S.credits.forEach((c, i) => {
+          const card = mk("div", "card", $("#cards"));
+          card.style.left = `${160 + i * 550}px`;
+          const ic = mk("div", "icon", card, ICON[i]);
+          ic.style.background = GRAD[i];
+          if (i === 2) ic.style.color = "#2a0f2e";
+          mk("div", "name", card, c.name);
+          mk("div", "role", card, c.role);
+          tl.fromTo(card, { opacity: 0, y: 80, rotation: i === 1 ? 0 : i === 0 ? -6 : 6, scale: 0.8 },
+            { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.7, ease: "back.out(1.8)" }, cardTimes[i] - 0.1);
+          tl.fromTo(card, { boxShadow: "0 0 0 6px rgba(255,209,102,0.9), 0 24px 60px rgba(0,0,0,0.35)" },
+            { boxShadow: "0 0 0 0px rgba(255,209,102,0), 0 24px 60px rgba(0,0,0,0.35)", duration: 1.2, immediateRender: false }, cardTimes[i] + 0.5);
+        });
+
+        // Narration subtitles, phrase by phrase, word-level highlight.
+        const phrases = [];
+        let cur = [];
+        nw.forEach((w, i) => {
+          cur.push(w);
+          const endPunct = /[.,!?]$/.test(w.t);
+          if ((endPunct && cur.length >= 3) || cur.length >= 8 || i === nw.length - 1) {
+            phrases.push(cur);
+            cur = [];
+          }
+        });
+        phrases.forEach((ph, pi) => {
+          const div = mk("div", "phrase", $("#subs"));
+          const spans = ph.map((w) => mk("span", "w", div, w.t));
+          const start = ph[0].s - 0.15;
+          const end = phrases[pi + 1] ? phrases[pi + 1][0].s - 0.15 : S.total - 0.6;
+          tl.fromTo(div, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25 }, start);
+          tl.to(div, { opacity: 0, y: -20, duration: 0.2 }, end - 0.2);
+          ph.forEach((w, wi) => tl.to(spans[wi], { color: "#ffffff", duration: 0.12 }, w.s));
+        });
+        const congrats = wordTime(/^Congratulations/i, S.total - 5);
+        burst(congrats, 480, 760, 40, 1.2);
+        burst(congrats + 0.25, 1440, 760, 40, 1.2);
+
+        tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, S.total - 0.9);
+        tl.set({}, {}, S.total); // pin the timeline length to the composition length
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["main"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </body>
+</html>
