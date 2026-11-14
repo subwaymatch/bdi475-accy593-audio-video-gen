@@ -3,7 +3,7 @@ name: Render video
 # Renders the HyperFrames composition in video/ to MP4.
 # - Pull requests: render and upload the MP4 as a workflow artifact (no release).
 # - Pushes to main / manual runs: render and publish the MP4 as a GitHub Release.
-# - Manual runs can also regenerate the song + narration with the ElevenLabs API
+# - Manual runs can also re-run the ElevenLabs lyric alignment of the song
 #   (needs the ELEVENLABS_API_KEY repository secret).
 
 on:
@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       regenerate_audio:
-        description: "Re-run ElevenLabs lyric alignment and narration (uses credits; needs ELEVENLABS_API_KEY secret)"
+        description: "Re-run ElevenLabs lyric alignment (uses credits; needs ELEVENLABS_API_KEY secret)"
         type: boolean
         default: false
       release_tag:
@@ -77,7 +77,7 @@ jobs:
           fi
           npx --yes hyperframes@${HYPERFRAMES_VERSION} doctor || true
 
-      - name: Re-align lyrics and regenerate narration (ElevenLabs)
+      - name: Re-align lyrics (ElevenLabs)
         if: github.event_name == 'workflow_dispatch' && inputs.regenerate_audio
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
@@ -111,7 +111,6 @@ jobs:
           path: |
             ${{ env.OUTPUT }}
             video/assets/song.mp3
-            video/assets/narration.mp3
           if-no-files-found: error
 
       - name: Publish release

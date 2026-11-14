@@ -4,9 +4,8 @@ window.SONG = {
  "subtitle": "BDI 475 · ACCY 593",
  "songDuration": 83.616,
  "songEnd": 83.1,
- "narrationStart": 83.7,
- "narrationDuration": 14.655,
- "total": 100.9,
+ "creditsStart": 82.7,
+ "total": 87.4,
  "bpm": 96.6,
  "beats": [
   0.235,
@@ -1423,211 +1422,6 @@ window.SONG = {
    ]
   }
  ],
- "narration": {
-  "text": "This video was generated with A.I. The song was created with Suno, this narration with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!",
-  "words": [
-   {
-    "t": "This",
-    "s": 83.7,
-    "e": 83.909
-   },
-   {
-    "t": "video",
-    "s": 83.955,
-    "e": 84.234
-   },
-   {
-    "t": "was",
-    "s": 84.28,
-    "e": 84.373
-   },
-   {
-    "t": "generated",
-    "s": 84.42,
-    "e": 84.873
-   },
-   {
-    "t": "with",
-    "s": 84.907,
-    "e": 85.035
-   },
-   {
-    "t": "A.I.",
-    "s": 85.093,
-    "e": 85.697
-   },
-   {
-    "t": "The",
-    "s": 86.022,
-    "e": 86.15
-   },
-   {
-    "t": "song",
-    "s": 86.196,
-    "e": 86.452
-   },
-   {
-    "t": "was",
-    "s": 86.498,
-    "e": 86.591
-   },
-   {
-    "t": "created",
-    "s": 86.649,
-    "e": 87.102
-   },
-   {
-    "t": "with",
-    "s": 87.137,
-    "e": 87.264
-   },
-   {
-    "t": "Suno,",
-    "s": 87.322,
-    "e": 87.868
-   },
-   {
-    "t": "this",
-    "s": 87.984,
-    "e": 88.147
-   },
-   {
-    "t": "narration",
-    "s": 88.205,
-    "e": 88.739
-   },
-   {
-    "t": "with",
-    "s": 88.808,
-    "e": 88.971
-   },
-   {
-    "t": "the",
-    "s": 89.006,
-    "e": 89.075
-   },
-   {
-    "t": "ElevenLabs",
-    "s": 89.122,
-    "e": 89.702
-   },
-   {
-    "t": "API,",
-    "s": 89.749,
-    "e": 90.445
-   },
-   {
-    "t": "the",
-    "s": 90.77,
-    "e": 90.863
-   },
-   {
-    "t": "code",
-    "s": 90.91,
-    "e": 91.154
-   },
-   {
-    "t": "was",
-    "s": 91.177,
-    "e": 91.27
-   },
-   {
-    "t": "written",
-    "s": 91.316,
-    "e": 91.537
-   },
-   {
-    "t": "by",
-    "s": 91.583,
-    "e": 91.676
-   },
-   {
-    "t": "Claude",
-    "s": 91.734,
-    "e": 92.048
-   },
-   {
-    "t": "Code,",
-    "s": 92.082,
-    "e": 92.535
-   },
-   {
-    "t": "and",
-    "s": 92.651,
-    "e": 92.802
-   },
-   {
-    "t": "the",
-    "s": 92.837,
-    "e": 92.907
-   },
-   {
-    "t": "video",
-    "s": 92.942,
-    "e": 93.22
-   },
-   {
-    "t": "was",
-    "s": 93.278,
-    "e": 93.371
-   },
-   {
-    "t": "rendered",
-    "s": 93.441,
-    "e": 93.743
-   },
-   {
-    "t": "with",
-    "s": 93.777,
-    "e": 93.905
-   },
-   {
-    "t": "HyperFrames.",
-    "s": 93.94,
-    "e": 94.822
-   },
-   {
-    "t": "Congratulations,",
-    "s": 95.205,
-    "e": 96.146
-   },
-   {
-    "t": "and",
-    "s": 96.181,
-    "e": 96.297
-   },
-   {
-    "t": "good",
-    "s": 96.378,
-    "e": 96.541
-   },
-   {
-    "t": "luck",
-    "s": 96.587,
-    "e": 96.761
-   },
-   {
-    "t": "on",
-    "s": 96.831,
-    "e": 96.947
-   },
-   {
-    "t": "your",
-    "s": 96.993,
-    "e": 97.098
-   },
-   {
-    "t": "journeys",
-    "s": 97.156,
-    "e": 97.516
-   },
-   {
-    "t": "ahead!",
-    "s": 97.562,
-    "e": 98.329
-   }
-  ]
- },
  "languages": {
   "en": {
    "native": "English",
@@ -1698,7 +1492,7 @@ window.SONG = {
   },
   {
    "name": "ElevenLabs API",
-   "role": "Narration & lyric timing",
+   "role": "Lyric timing",
    "icon": "mic-vocal"
   },
   {

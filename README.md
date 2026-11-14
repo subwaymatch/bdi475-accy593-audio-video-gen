@@ -2,10 +2,10 @@
 
 **Good Luck, Everyone!** is a multilingual farewell song for our semester in BDI 475 and
 ACCY 593, with an animated lyric video. Each lyric has a romanization (for non-Latin scripts)
-and an English translation. The video ends with a narrated note on how it was made.
+and an English translation. The video ends with a credits slide showing how it was made.
 
 - 🎵 **Song and vocals**: [Suno](https://suno.com), from the lyrics in [`LYRICS.md`](LYRICS.md)
-- 🎙️ **Narration and lyric timing**: [ElevenLabs API](https://elevenlabs.io/docs) (Text-to-Speech, and Forced Alignment of the lyrics to the song)
+- ⏱️ **Lyric timing**: [ElevenLabs API](https://elevenlabs.io/docs) (Forced Alignment of the lyrics to the song)
 - 🤖 **Lyrics, code and workflow**: Claude Code
 - 🎬 **Video**: [HyperFrames](https://hyperframes.heygen.com) (HTML + GSAP rendered to MP4)
 
@@ -22,21 +22,20 @@ workflow artifact. You can also start a render from **Actions → Render video �
 
 ```
 song/source/good-luck-everyone.m4a (Suno)
-song/lyrics.json (lyrics, translations, romanizations, narration script)
+song/lyrics.json (lyrics, translations, romanizations, credits)
         │
         ▼
 scripts/generate-audio.mjs ──► video/assets/song.mp3 + song/song-alignment.json   (ElevenLabs Forced Alignment)
-                           └─► video/assets/narration.mp3 + song/narration-response.json (ElevenLabs TTS)
         │
         ▼
-scripts/build-timeline.mjs ──► video/timeline.js   (lines, word times, beats, narration words)
+scripts/build-timeline.mjs ──► video/timeline.js   (lines, word times, beats)
         │
         ▼
 video/index.html (HyperFrames + GSAP) ──► npx hyperframes render ──► MP4
 ```
 
 - `song/lyrics.json` is the single source of truth. It holds the lyrics, romanizations,
-  English translations, the narration script and the narration voice (`vChnJZ1Cu89g2XXumPfT`).
+  English translations and the tools shown in the credits.
 - The Suno track embeds line-level timestamps. For word-level captions, ElevenLabs Forced
   Alignment times every character of the lyrics against the song. `build-timeline.mjs` maps
   those timings onto each lyric word (each character for Chinese) and fails loudly if the
@@ -58,7 +57,7 @@ video/index.html (HyperFrames + GSAP) ──► npx hyperframes render ──►
   Other Latin and Cyrillic text uses Inter. Chinese, Korean, Hindi and Arabic use Noto Sans SC,
   KR, Devanagari and Arabic. All fonts are SIL OFL, subset to the glyphs the video uses and
   kept in `video/assets/fonts`. Local renders and CI renders therefore look the same.
-- The song, its alignment and the narration are committed, so rendering needs no API key.
+- The song and its alignment are committed, so rendering needs no API key.
 
 ## Run locally
 
@@ -78,14 +77,10 @@ Preview in the browser with `cd video && npx hyperframes preview`.
 
 1. Put the new song in `song/source/` and point `song.file` in `song/lyrics.json` at it.
 2. Update the lyric lines in `song/lyrics.json` so they match what is sung, word for word.
-3. Re-align the song and regenerate the narration (uses ElevenLabs credits):
+3. Re-align the song (uses ElevenLabs credits):
 
    ```bash
-   ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs            # alignment + narration
-   ```
-
-   ```bash
-   ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs --align    # alignment only
+   ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs
    ```
 
 4. Rebuild the font subsets with `pip install fonttools brotli && python3 scripts/fonts.py`,

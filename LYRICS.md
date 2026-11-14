@@ -139,7 +139,3 @@ We studied and laughed, friends forever
 ربي يسهّل طريقكم، بالفرحة والهناء!\
 *rabbi ysahhel ṭrigkum, bel-farḥa wel-hna*\
 May God ease your path, with joy and peace!
-
-## Closing narration
-
-This video was generated with A.I. The song was created with Suno, this narration with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!

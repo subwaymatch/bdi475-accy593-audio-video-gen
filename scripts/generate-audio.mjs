@@ -1,12 +1,9 @@
 #!/usr/bin/env node
-// Prepares the audio for the video with the ElevenLabs API:
-//   --align      Converts the Suno song (song/source/*.m4a) to video/assets/song.mp3 and runs
-//                ElevenLabs Forced Alignment against the lyrics → song/song-alignment.json
-//   --narration  Generates the closing narration (Text-to-Speech with timestamps)
-//                → video/assets/narration.mp3 + song/narration-response.json
-// With no flags, both run.
+// Prepares the song for the video with the ElevenLabs API: converts the Suno song
+// (song/source/*.m4a) to video/assets/song.mp3 and runs ElevenLabs Forced Alignment of the
+// lyrics against it → song/song-alignment.json (word and character timings for captions).
 //
-// Usage: ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs [--align] [--narration]
+// Usage: ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -20,10 +17,6 @@ if (!KEY) {
   console.error("ELEVENLABS_API_KEY is not set");
   process.exit(1);
 }
-
-const args = new Set(process.argv.slice(2));
-const doAlign = args.size === 0 || args.has("--align");
-const doNarration = args.size === 0 || args.has("--narration");
 
 const lyrics = JSON.parse(await readFile(path.join(ROOT, "song/lyrics.json"), "utf8"));
 await mkdir(path.join(ROOT, "video/assets"), { recursive: true });
@@ -46,25 +39,4 @@ async function alignSong() {
   console.log(`Aligned ${data.words.length} words (loss ${data.loss.toFixed(3)}).`);
 }
 
-async function generateNarration() {
-  const n = lyrics.narration;
-  console.log(`Generating narration with voice ${n.voice_id}…`);
-  const res = await fetch(`${API}/v1/text-to-speech/${n.voice_id}/with-timestamps?output_format=mp3_44100_192`, {
-    method: "POST",
-    headers: { "xi-api-key": KEY, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text: n.text,
-      model_id: n.model_id,
-      voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.25, use_speaker_boost: true },
-    }),
-  });
-  if (!res.ok) throw new Error(`TTS API ${res.status}: ${await res.text()}`);
-  const data = await res.json();
-  await writeFile(path.join(ROOT, "video/assets/narration.mp3"), Buffer.from(data.audio_base64, "base64"));
-  delete data.audio_base64;
-  await writeFile(path.join(ROOT, "song/narration-response.json"), JSON.stringify(data, null, 2) + "\n");
-  console.log("Narration saved.");
-}
-
-if (doAlign) await alignSong();
-if (doNarration) await generateNarration();
+await alignSong();

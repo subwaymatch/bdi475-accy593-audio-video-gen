@@ -256,11 +256,6 @@
       ]
     }
   ],
-  "narration": {
-    "voice_id": "vChnJZ1Cu89g2XXumPfT",
-    "model_id": "eleven_multilingual_v2",
-    "text": "This video was generated with A.I. The song was created with Suno, this narration with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!"
-  },
   "languages": {
     "en": {
       "native": "English",
@@ -331,7 +326,7 @@
     },
     {
       "name": "ElevenLabs API",
-      "role": "Narration & lyric timing",
+      "role": "Lyric timing",
       "icon": "mic-vocal"
     },
     {
