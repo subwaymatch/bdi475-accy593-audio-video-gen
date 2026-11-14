@@ -9,7 +9,7 @@ const L = JSON.parse(readFileSync(path.join(ROOT, "song/lyrics.json"), "utf8"));
 
 const out = [];
 out.push(`## ${L.title} — ${L.subtitle}`, "");
-out.push("A jolly, one-minute multilingual song about our semester in BDI 475 and ACCY 593, with animated lyric captions and English translations.", "");
+out.push("A multilingual farewell song for our semester in BDI 475 and ACCY 593 (song by Suno), with animated lyric captions and English translations.", "");
 out.push("### Lyrics", "");
 out.push("| Language | Lyric | English |", "|---|---|---|");
 for (const s of L.sections) {

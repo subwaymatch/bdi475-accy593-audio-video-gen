@@ -105,13 +105,13 @@
       #madeWith { position: absolute; top: 290px; width: 1920px; text-align: center; font-family: var(--font-ui); font-weight: 600;
         font-size: 48px; letter-spacing: -0.022em; color: #ffd9c2; opacity: 0; }
       /* Credits: plain columns, no card container. */
-      .card { position: absolute; top: 400px; width: 500px; display: flex; flex-direction: column; align-items: center;
+      .card { position: absolute; top: 400px; width: 400px; display: flex; flex-direction: column; align-items: center;
         text-align: center; opacity: 0; }
       .card .icon { width: 72px; height: 72px; color: #ffffff; }
       .card .icon svg { width: 100%; height: 100%; display: block; }
-      .card .name { margin-top: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 38px; line-height: 1.2;
+      .card .name { margin-top: 26px; font-family: "Inter", sans-serif; font-weight: 600; font-size: 34px; line-height: 1.25;
         letter-spacing: -0.02em; color: #ffffff; }
-      .card .role { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 450; font-size: 38px; line-height: 1.2;
+      .card .role { margin-top: 6px; font-family: "Inter", sans-serif; font-weight: 450; font-size: 34px; line-height: 1.25;
         letter-spacing: -0.015em; color: rgba(255, 255, 255, 0.7); }
       #subs { position: absolute; top: 700px; left: 160px; width: 1600px; height: 160px; }
       .phrase { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center;
@@ -124,9 +124,9 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="84.1" data-width="1920" data-height="1080">
-      <audio id="song" src="assets/song.mp3" data-start="0" data-duration="66.6" data-volume="1" data-fade-out="0.3"></audio>
-      <audio id="narration" src="assets/narration.mp3" data-start="67.2" data-duration="14.341" data-volume="1.25"></audio>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="100.9" data-width="1920" data-height="1080">
+      <audio id="song" src="assets/song.mp3" data-start="0" data-duration="83.1" data-volume="1" data-fade-out="0.3"></audio>
+      <audio id="narration" src="assets/narration.mp3" data-start="83.7" data-duration="14.655" data-volume="1.25"></audio>
 
       <div id="bgLayer" class="layer" data-layout-ignore><div id="blobs" class="layer"></div></div>
       <div id="pulse" class="layer" data-layout-ignore><div id="shapes" class="layer"></div></div>
@@ -197,11 +197,11 @@
 
         const PAL = ["#5b3bff", "#a33ed9", "#d946af", "#fe4764", "#ff9a4a", "#ffd166"];
         const ACCENT = { en: "#ffb547", zh: "#ff5c7a", vi: "#ffd166", es: "#ff7a45", ko: "#7ad7ff", fr: "#b8a2ff",
-          kk: "#5ee3c1", hi: "#ff9a4a", "ar-SA": "#7cf29a", ms: "#ffd166", "ar-DZ": "#ff7ab8" };
-        const FONT = { en: "f-en", zh: "f-zh", ko: "f-ko", kk: "f-kk", hi: "f-hi", "ar-SA": "f-ar", "ar-DZ": "f-ar" };
+          kk: "#5ee3c1", hi: "#ff9a4a", "ar-SA": "#7cf29a", ms: "#ffd166", "en-SG": "#ff8fb1", "ar-DZ": "#ff7ab8" };
+        const FONT = { en: "f-en", "en-SG": "f-en", zh: "f-zh", ko: "f-ko", kk: "f-kk", hi: "f-hi", "ar-SA": "f-ar", "ar-DZ": "f-ar" };
         const EM = { "f-en": 0.52, "f-latin": 0.56, "f-kk": 0.6, "f-zh": 1.02, "f-ko": 0.95, "f-hi": 0.62, "f-ar": 0.52 };
         const STYLE = { en: "karaoke", zh: "drop", vi: "rise", es: "stamp", ko: "pop", fr: "swirl", kk: "slide",
-          hi: "glow", "ar-SA": "blur", ms: "wave", "ar-DZ": "pop" };
+          hi: "glow", "ar-SA": "blur", ms: "wave", "en-SG": "stamp", "ar-DZ": "pop" };
         const songEnd = S.songEnd;
         const finale = S.lines.at(-1).end + 0.25; // logo returns centre stage
         const credits = S.narrationStart - 0.3;
@@ -298,7 +298,7 @@
         S.beats.filter((b) => b < S.lines[3].show - 0.3).forEach((b, i) => {
           if (i % 2 === 0) tl.fromTo("#logoPulse", { scale: 1.04 }, { scale: 1, duration: 0.45, ease: "power2.out", immediateRender: false }, b);
         });
-        const toBadge = S.lines[3].show - 0.9; // before the first non-English line
+        const toBadge = S.lines.find((l) => l.section > 0).show - 0.9; // before the second section
         tl.to("#title", { opacity: 0, y: -20, duration: 0.4 }, toBadge - 0.2);
         tl.to("#logoWrap", { x: -466, y: -30, scale: 0.24, duration: 0.9, ease: "power3.inOut" }, toBadge);
         burst(0.55, 960, 500, 50, 1.1);
@@ -432,11 +432,11 @@
         });
 
         // ---------------------------------------------------------------- animated emoji
-        const RUN_EMOJI = [["partying", "notes"], ["books", "sparkles"], ["grin", "raised_hands"], ["fire", "rainbow"],
-          ["heart", "star_struck"], ["wave"], ["glowing_star"], ["chart", "notes"], ["cool"], ["clover"], ["rocket"],
-          ["globe", "grad_cap"]];
+        const LANG_EMOJI = { zh: ["books", "sparkles"], ko: ["heart", "star_struck"], vi: ["grin", "raised_hands"],
+          es: ["fire", "rainbow"], fr: ["wave"], kk: ["glowing_star"], hi: ["chart", "notes"], "ar-SA": ["cool"],
+          ms: ["clover"], "en-SG": ["rocket"], "ar-DZ": ["heart"] };
         runs.forEach((r, i) => {
-          const list = RUN_EMOJI[i] || [];
+          const list = i === 0 ? ["partying", "notes"] : i === runs.length - 1 ? ["globe", "grad_cap"] : LANG_EMOJI[r.lang] || [];
           const slots = i === 0 ? [[290, 280, 170], [1630, 280, 170]]
             : i === runs.length - 1 ? [[105, 470, 120], [1815, 470, 120]]
             : i % 2 ? [[1670, 750, 150], [270, 210, 150]] : [[250, 750, 150], [1650, 210, 150]];
@@ -467,7 +467,10 @@
           gsap.set(p, { x, y, xPercent: -50, yPercent: -50, opacity: 0, scale: 0 });
           const beat = S.beats.find((b) => b >= outroStart + i * 0.48) ?? outroStart + i * 0.48;
           tl.to(p, { opacity: 1, scale: 0.8, duration: 0.5, ease: "back.out(2.5)" }, beat);
-          tl.to(p, { y: y - 14, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 5 }, beat + 0.5);
+          // Gentle float until the finale; an odd repeat count ends back at the start position.
+          const floats = Math.floor((finale - (beat + 0.5)) / 1.2);
+          const rep = floats % 2 === 0 ? floats - 1 : floats - 2;
+          if (rep >= 1) tl.to(p, { y: y - 14, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: rep }, beat + 0.5);
           return p;
         });
         // Finale: logo back to centre stage, the wishes orbit around it.
@@ -476,13 +479,13 @@
           const a = -Math.PI / 2 + (i / lucks.length) * Math.PI * 2;
           tl.to(p, { x: 960 + Math.cos(a) * 790, y: 320 + Math.sin(a) * 262, scale: 1, duration: 0.9, ease: "power3.inOut" }, finale + 0.05 * i);
         });
-        tl.fromTo("#bigLuck", { opacity: 0, scale: 0.6, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(2)" }, finale + 0.4);
-        tl.fromTo("#bigLuckSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, finale + 0.8);
+        tl.fromTo("#bigLuck", { opacity: 0, scale: 0.6, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(2)" }, finale + 1.15);
+        tl.fromTo("#bigLuckSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, finale + 1.5);
         $("#bigLuck").textContent = "Good luck!";
         $("#bigLuckSub").textContent = "on all your journeys ahead";
-        burst(finale + 0.3, 960, 720, 60, 1.3);
-        burst(finale + 0.9, 420, 820, 36, 1.1);
-        burst(finale + 1.3, 1500, 820, 36, 1.1);
+        burst(finale + 1.15, 960, 720, 60, 1.3);
+        burst(finale + 1.5, 420, 820, 36, 1.1);
+        burst(finale + 1.8, 1500, 820, 36, 1.1);
 
         // ---------------------------------------------------------------- credits + narration
         lucks.forEach((p, i) => {
@@ -497,17 +500,18 @@
         const wordTime = (re, fallback) => (nw.find((w) => re.test(w.t)) || { s: fallback }).s;
         // Lucide icons (ISC licence, lucide.dev), drawn in white.
         const LUCIDE = {
-          "audio-lines": '<path d="M2 10v3" /> <path d="M6 6v11" /> <path d="M10 3v18" /> <path d="M14 8v7" /> <path d="M18 5v13" /> <path d="M22 10v3" />',
-          "square-terminal": '<path d="m7 11 2-2-2-2" /> <path d="M11 13h4" /> <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />',
-          clapperboard: '<path d="m12.296 3.464 3.02 3.956" /> <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z" /> <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> <path d="m6.18 5.276 3.1 3.899" />',
+          "music": "<path d=\"M21 16V3a1 1 0 0 0-1.28-.96l-10 2.917a1 1 0 0 0-.72.96V19\" /> <circle cx=\"18\" cy=\"16\" r=\"3\" /> <circle cx=\"6\" cy=\"19\" r=\"3\" />",
+          "mic-vocal": "<path d=\"m11 7.601-5.994 8.19a1 1 0 0 0 .1 1.298l.817.818a1 1 0 0 0 1.314.087L15.09 12\" /> <path d=\"M16.5 21.174C15.5 20.5 14.372 20 13 20c-2.058 0-3.928 2.356-6 2-2.072-.356-2.775-3.369-1.5-4.5\" /> <circle cx=\"16\" cy=\"7\" r=\"5\" />",
+          "square-terminal": "<path d=\"m7 11 2-2-2-2\" /> <path d=\"M11 13h4\" /> <rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\" />",
+          "clapperboard": "<path d=\"m12.296 3.464 3.02 3.956\" /> <path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z\" /> <path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" /> <path d=\"m6.18 5.276 3.1 3.899\" />",
         };
-        const ICON = ["audio-lines", "square-terminal", "clapperboard"];
-        const cardTimes = [wordTime(/ElevenLabs/i, credits + 3), wordTime(/^Claude/i, credits + 6), wordTime(/HyperFrames/i, credits + 9)];
+        const CREDIT_WORD = [/^Suno/i, /ElevenLabs/i, /^Claude/i, /HyperFrames/i];
+        const cardTimes = S.credits.map((c, i) => wordTime(CREDIT_WORD[i] || /$^/, credits + 2 + i * 2.5));
         S.credits.forEach((c, i) => {
           const card = mk("div", "card", $("#cards"));
-          card.style.left = `${160 + i * 550}px`;
+          card.style.left = `${160 + i * 400}px`;
           const ic = mk("div", "icon", card);
-          ic.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[ICON[i]]}</svg>`;
+          ic.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[c.icon]}</svg>`;
           mk("div", "name", card, c.name);
           mk("div", "role", card, c.role);
           tl.fromTo(card, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, cardTimes[i] - 0.1);

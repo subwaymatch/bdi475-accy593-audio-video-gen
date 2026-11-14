@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-// Generates the song (ElevenLabs Music API, with word timestamps) and the closing
-// narration (ElevenLabs Text-to-Speech, with character timestamps).
+// Prepares the audio for the video with the ElevenLabs API:
+//   --align      Converts the Suno song (song/source/*.m4a) to video/assets/song.mp3 and runs
+//                ElevenLabs Forced Alignment against the lyrics → song/song-alignment.json
+//   --narration  Generates the closing narration (Text-to-Speech with timestamps)
+//                → video/assets/narration.mp3 + song/narration-response.json
+// With no flags, both run.
 //
-// Usage:
-//   ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs [--song] [--narration]
-// With no flags, both are generated.
-//
-// Outputs (committed so renders are reproducible without an API key):
-//   video/assets/song.mp3, song/song-response.json
-//   video/assets/narration.mp3, song/narration-response.json
+// Usage: ELEVENLABS_API_KEY=... node scripts/generate-audio.mjs [--align] [--narration]
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -23,76 +22,28 @@ if (!KEY) {
 }
 
 const args = new Set(process.argv.slice(2));
-const doSong = args.size === 0 || args.has("--song");
+const doAlign = args.size === 0 || args.has("--align");
 const doNarration = args.size === 0 || args.has("--narration");
 
 const lyrics = JSON.parse(await readFile(path.join(ROOT, "song/lyrics.json"), "utf8"));
 await mkdir(path.join(ROOT, "video/assets"), { recursive: true });
 
-function compositionPlan() {
-  return {
-    positive_global_styles: lyrics.positive_global_styles,
-    negative_global_styles: lyrics.negative_global_styles,
-    sections: lyrics.sections.map((s) => ({
-      section_name: s.name,
-      positive_local_styles: s.styles,
-      negative_local_styles: [],
-      duration_ms: s.duration_ms,
-      lines: s.lines.map((l) => l.text),
-    })),
-  };
-}
+async function alignSong() {
+  const src = path.join(ROOT, lyrics.song.file);
+  const mp3 = path.join(ROOT, "video/assets/song.mp3");
+  console.log(`Converting ${lyrics.song.file} → video/assets/song.mp3`);
+  execFileSync("ffmpeg", ["-v", "error", "-y", "-i", src, "-map", "0:a:0", "-c:a", "libmp3lame", "-b:a", "192k", mp3]);
 
-// The /v1/music/detailed endpoint answers with multipart/mixed: a JSON part
-// (composition plan, song metadata, word timestamps) and a binary audio part.
-function parseMultipart(buf, contentType) {
-  const m = /boundary="?([^";]+)"?/i.exec(contentType || "");
-  if (!m) throw new Error(`No multipart boundary in content-type: ${contentType}`);
-  const delim = Buffer.from(`--${m[1]}`);
-  const parts = [];
-  let pos = buf.indexOf(delim);
-  while (pos !== -1) {
-    const start = pos + delim.length;
-    if (buf.slice(start, start + 2).toString() === "--") break;
-    const next = buf.indexOf(delim, start);
-    if (next === -1) break;
-    let part = buf.slice(start, next);
-    if (part.slice(0, 2).toString() === "\r\n") part = part.slice(2);
-    if (part.slice(-2).toString() === "\r\n") part = part.slice(0, -2);
-    const headerEnd = part.indexOf("\r\n\r\n");
-    const headers = part.slice(0, headerEnd).toString("utf8");
-    parts.push({ headers, body: part.slice(headerEnd + 4) });
-    pos = next;
-  }
-  return parts;
-}
-
-async function generateSong() {
-  const body = {
-    composition_plan: compositionPlan(),
-    model_id: lyrics.model_id || "music_v1",
-    respect_sections_durations: true,
-    with_timestamps: true,
-  };
-  console.log(`Composing song (${body.composition_plan.sections.length} sections)…`);
-  const res = await fetch(`${API}/v1/music/detailed?output_format=mp3_44100_192`, {
-    method: "POST",
-    headers: { "xi-api-key": KEY, "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`Music API ${res.status}: ${await res.text()}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  const parts = parseMultipart(buf, res.headers.get("content-type"));
-  const jsonPart = parts.find((p) => /application\/json/i.test(p.headers));
-  const audioPart = parts.find((p) => /audio\//i.test(p.headers) || /octet-stream/i.test(p.headers));
-  if (!jsonPart || !audioPart) {
-    throw new Error(`Unexpected multipart layout: ${parts.map((p) => p.headers).join(" | ")}`);
-  }
-  const meta = JSON.parse(jsonPart.body.toString("utf8"));
-  meta.song_id = res.headers.get("song-id") || meta.song_id || null;
-  await writeFile(path.join(ROOT, "video/assets/song.mp3"), audioPart.body);
-  await writeFile(path.join(ROOT, "song/song-response.json"), JSON.stringify(meta, null, 2) + "\n");
-  console.log(`Song saved (${(audioPart.body.length / 1024).toFixed(0)} KB). Title: ${meta.song_metadata?.title ?? "?"}`);
+  const text = lyrics.sections.flatMap((s) => s.lines.map((l) => l.text)).join("\n");
+  const form = new FormData();
+  form.append("file", new Blob([await readFile(mp3)], { type: "audio/mpeg" }), "song.mp3");
+  form.append("text", text);
+  console.log("Running ElevenLabs Forced Alignment…");
+  const res = await fetch(`${API}/v1/forced-alignment`, { method: "POST", headers: { "xi-api-key": KEY }, body: form });
+  if (!res.ok) throw new Error(`Forced Alignment API ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  await writeFile(path.join(ROOT, "song/song-alignment.json"), JSON.stringify(data, null, 1) + "\n");
+  console.log(`Aligned ${data.words.length} words (loss ${data.loss.toFixed(3)}).`);
 }
 
 async function generateNarration() {
@@ -115,5 +66,5 @@ async function generateNarration() {
   console.log("Narration saved.");
 }
 
-if (doSong) await generateSong();
+if (doAlign) await alignSong();
 if (doNarration) await generateNarration();

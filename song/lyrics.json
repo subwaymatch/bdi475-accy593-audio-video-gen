@@ -1,201 +1,256 @@
 {
-  "title": "Semester Around the World",
+  "title": "Good Luck, Everyone!",
   "subtitle": "BDI 475 · ACCY 593",
-  "model_id": "music_v1",
-  "positive_global_styles": [
-    "jolly upbeat pop",
-    "light bouncy beat",
-    "ukulele and acoustic guitar",
-    "handclaps and finger snaps",
-    "glockenspiel sparkles",
-    "warm cheerful mixed-gender vocals",
-    "multilingual sing-along",
-    "124 bpm",
-    "major key",
-    "bright modern production"
-  ],
-  "negative_global_styles": [
-    "sad",
-    "dark",
-    "heavy distortion",
-    "metal",
-    "aggressive rap",
-    "slow ballad"
-  ],
+  "song": {
+    "source": "Suno",
+    "file": "song/source/good-luck-everyone.m4a",
+    "note": "Song and vocals generated with Suno from these lyrics. Word timings come from ElevenLabs Forced Alignment (song/song-alignment.json)."
+  },
   "sections": [
     {
-      "name": "Intro",
-      "duration_ms": 10000,
-      "styles": [
-        "playful ukulele intro",
-        "handclaps build",
-        "sung in English",
-        "excited and celebratory"
-      ],
-      "lines": [
-        {
-          "lang": "en",
-          "language": "English",
-          "text": "Hey hey, B-D-I four-seventy-five!",
-          "display": "Hey hey, BDI 475!",
-          "en": ""
-        },
-        {
-          "lang": "en",
-          "language": "English",
-          "text": "A-C-C-Y five-ninety-three, we came alive!",
-          "display": "ACCY 593, we came alive!",
-          "en": ""
-        },
-        {
-          "lang": "en",
-          "language": "English",
-          "text": "What a semester, what a ride!",
-          "en": ""
-        }
-      ]
-    },
-    {
       "name": "Verse 1",
-      "duration_ms": 14000,
-      "styles": [
-        "full light beat kicks in",
-        "sung in Mandarin Chinese then Vietnamese then Mexican Spanish",
-        "bouncy"
-      ],
       "lines": [
         {
-          "lang": "zh",
-          "language": "Mandarin",
-          "text": "这学期我们一起欢笑",
-          "roman": "zhè xuéqī wǒmen yìqǐ huānxiào",
-          "en": "This semester we laughed together"
+          "lang": "en",
+          "language": "English",
+          "text": "What a semester, what a ride,",
+          "en": ""
         },
         {
-          "lang": "zh",
-          "language": "Mandarin",
-          "text": "数据和代码真奇妙",
-          "roman": "shùjù hé dàimǎ zhēn qímiào",
-          "en": "Data and code are so wonderful"
+          "lang": "en",
+          "language": "English",
+          "text": "BDI four seventy-five, side by side!",
+          "display": "BDI 475, side by side!",
+          "display_groups": [
+            1,
+            2,
+            1,
+            1,
+            1
+          ],
+          "en": ""
         },
         {
-          "lang": "vi",
-          "language": "Vietnamese",
-          "text": "Cùng nhau học, cùng nhau vui!",
-          "en": "Learning together, having fun together!"
-        },
-        {
-          "lang": "es",
-          "language": "Spanish (Mexico)",
-          "text": "¡Qué padre fue este semestre, compas!",
-          "en": "What an awesome semester, buddies!"
+          "lang": "en",
+          "language": "English",
+          "text": "EH-kee five ninety three, we learned and laughed,",
+          "display": "ACCY 593, we learned and laughed,",
+          "display_groups": [
+            1,
+            3,
+            1,
+            1,
+            1,
+            1
+          ],
+          "en": ""
         }
       ]
     },
     {
-      "name": "Verse 2",
-      "duration_ms": 12000,
-      "styles": [
-        "sung in Korean then French then Kazakh",
-        "glockenspiel accents",
-        "joyful"
-      ],
+      "name": "Mandarin",
+      "lines": [
+        {
+          "lang": "zh",
+          "language": "Mandarin",
+          "text": "这学期一起学习，笑声满满在心底，",
+          "roman": "zhè xuéqī yìqǐ xuéxí, xiàoshēng mǎnmǎn zài xīndǐ",
+          "en": "This semester we studied together, hearts full of laughter"
+        },
+        {
+          "lang": "zh",
+          "language": "Mandarin",
+          "text": "课堂点点滴滴，都是珍贵回忆！",
+          "roman": "kètáng diǎndiǎn dīdī, dōu shì zhēnguì huíyì",
+          "en": "Every little moment in class is a precious memory!"
+        }
+      ]
+    },
+    {
+      "name": "Korean",
       "lines": [
         {
           "lang": "ko",
           "language": "Korean",
-          "text": "함께 배운 이 시간, 정말 즐거웠어",
-          "roman": "hamkke baeun i sigan, jeongmal jeulgeowosseo",
-          "en": "The time we learned together was so much fun"
+          "text": "함께 공부하며 웃던 날들, 기쁨이 가득했죠,",
+          "roman": "hamkke gongbuhamyeo utdeon naldeul, gippeumi gadeukhaetjyo",
+          "en": "The days we studied and laughed together were full of joy"
         },
         {
-          "lang": "fr",
-          "language": "French",
-          "text": "Merci, les amis !",
-          "en": "Thank you, friends!"
-        },
-        {
-          "lang": "kk",
-          "language": "Kazakh",
-          "text": "Бірге оқыдық, бірге күлдік!",
-          "roman": "birge oqydyq, birge küldik",
-          "en": "We studied together, we laughed together!"
+          "lang": "ko",
+          "language": "Korean",
+          "text": "가는 길마다 행운이 가득하길, 모두 힘내요!",
+          "roman": "ganeun gilmada haenguni gadeukhagil, modu himnaeyo",
+          "en": "May every road you take be full of luck. Keep going, everyone!"
         }
       ]
     },
     {
-      "name": "Verse 3",
-      "duration_ms": 14000,
-      "styles": [
-        "sung in Hindi then Saudi Arabic then Malay then Algerian Arabic",
-        "handclaps",
-        "festive"
-      ],
+      "name": "Vietnamese",
+      "lines": [
+        {
+          "lang": "vi",
+          "language": "Vietnamese",
+          "text": "Cùng học, cùng cười, bao chuyện thật vui,",
+          "en": "Learning together, laughing together, so many happy moments"
+        },
+        {
+          "lang": "vi",
+          "language": "Vietnamese",
+          "text": "Chúc bạn đường xa may mắn, mãi vui!",
+          "en": "Wishing you luck on the long road, and joy always!"
+        }
+      ]
+    },
+    {
+      "name": "Spanish",
+      "lines": [
+        {
+          "lang": "es",
+          "language": "Spanish (Mexico)",
+          "text": "¡Qué buen semestre, qué gran amistad!",
+          "en": "What a great semester, what a great friendship!"
+        },
+        {
+          "lang": "es",
+          "language": "Spanish (Mexico)",
+          "text": "¡Suerte en lo que viene, con felicidad!",
+          "en": "Good luck in what comes next, with happiness!"
+        }
+      ]
+    },
+    {
+      "name": "French",
+      "lines": [
+        {
+          "lang": "fr",
+          "language": "French",
+          "text": "Bonne chance à tous, et bon chemin !",
+          "en": "Good luck to all, and safe travels!"
+        }
+      ]
+    },
+    {
+      "name": "Kazakh",
+      "lines": [
+        {
+          "lang": "kk",
+          "language": "Kazakh",
+          "text": "Бірге оқып, бірге күлдік, күндер қандай тамаша,",
+          "roman": "birge oqyp, birge küldık, künder qandai tamaşa",
+          "en": "We studied together, laughed together, what wonderful days"
+        },
+        {
+          "lang": "kk",
+          "language": "Kazakh",
+          "text": "Алдағы сапарларың сәтті болсын, достар, әрқашан!",
+          "roman": "aldağy saparlaryñ sättı bolsyn, dostar, ärqaşan",
+          "en": "May your journeys ahead always go well, friends!"
+        }
+      ]
+    },
+    {
+      "name": "Hindi",
       "lines": [
         {
           "lang": "hi",
           "language": "Hindi",
-          "text": "साथ में सीखा, साथ में गाया",
-          "roman": "saath mein seekha, saath mein gaaya",
-          "en": "We learned together, we sang together"
+          "text": "सीखा, हँसे, साथ बिताए दिन,",
+          "roman": "seekha, hanse, saath bitaaye din",
+          "en": "We learned, we laughed, we spent our days together"
+        },
+        {
+          "lang": "hi",
+          "language": "Hindi",
+          "text": "आगे की राह में मिलें खुशियाँ हर दिन!",
+          "roman": "aage ki raah mein milen khushiyaan har din",
+          "en": "May you find joy every day on the road ahead!"
+        }
+      ]
+    },
+    {
+      "name": "Arabic (Saudi)",
+      "lines": [
+        {
+          "lang": "ar-SA",
+          "language": "Arabic (Saudi)",
+          "text": "درسنا وضحكنا، يا أحلى صحاب،",
+          "roman": "darasna w ḍiḥikna, ya aḥla ṣḥāb",
+          "en": "We studied and laughed, my dearest friends",
+          "rtl": true
         },
         {
           "lang": "ar-SA",
           "language": "Arabic (Saudi)",
-          "text": "والله كان ترم حلو مرة",
-          "roman": "wallah kān term ḥelw marra",
-          "en": "I swear, it was a really sweet semester",
+          "text": "الله يوفقكم في كل الدروب!",
+          "roman": "Allah ywaffigkum fi kull ad-drūb",
+          "en": "May God grant you success on every path!",
           "rtl": true
+        }
+      ]
+    },
+    {
+      "name": "Malay",
+      "lines": [
+        {
+          "lang": "ms",
+          "language": "Malay",
+          "text": "Belajar bersama, kenangan indah,",
+          "en": "Learning together, beautiful memories"
         },
         {
           "lang": "ms",
           "language": "Malay",
-          "text": "Semoga berjaya, kawan!",
-          "en": "Good luck, friends!"
+          "text": "Semoga berjaya, terus melangkah!",
+          "en": "Wishing you success, keep moving forward!"
+        }
+      ]
+    },
+    {
+      "name": "Singapore English",
+      "lines": [
+        {
+          "lang": "en-SG",
+          "language": "Singapore English",
+          "text": "Can lah, we made it—good luck, everyone!",
+          "en": "Yes we can, we made it! Good luck, everyone!"
+        }
+      ]
+    },
+    {
+      "name": "Algerian Arabic",
+      "lines": [
+        {
+          "lang": "ar-DZ",
+          "language": "Algerian Arabic",
+          "text": "قرينا وضحكنا، صحاب ديما،",
+          "roman": "qrina w ḍḥakna, ṣḥāb dīma",
+          "en": "We studied and laughed, friends forever",
+          "rtl": true
         },
         {
           "lang": "ar-DZ",
           "language": "Algerian Arabic",
-          "text": "بالتوفيق يا لحباب!",
-          "roman": "bettawfiq ya lahbab",
-          "en": "Good luck, dear friends!",
+          "text": "ربي يسهّل طريقكم، بالفرحة والهناء!",
+          "roman": "rabbi ysahhel ṭrigkum, bel-farḥa wel-hna",
+          "en": "May God ease your path, with joy and peace!",
           "rtl": true
         }
       ]
     },
     {
       "name": "Outro",
-      "duration_ms": 18000,
-      "styles": [
-        "sung in English",
-        "big happy sing-along finale",
-        "all four lines sung clearly at a relaxed pace",
-        "ends with a short ukulele tag and a bright final chord"
-      ],
       "lines": [
         {
           "lang": "en",
           "language": "English",
-          "text": "So here's to you on the road ahead,",
+          "text": "Wishing you good luck wherever your journey goes!",
           "en": ""
         },
         {
           "lang": "en",
           "language": "English",
-          "text": "Good luck on every journey, every step!",
-          "en": ""
-        },
-        {
-          "lang": "en",
-          "language": "English",
-          "text": "B-D-I four-seventy-five, A-C-C-Y five-ninety-three,",
-          "display": "BDI 475, ACCY 593,",
-          "en": ""
-        },
-        {
-          "lang": "en",
-          "language": "English",
-          "text": "Keep shining bright, wherever you'll be!",
+          "text": "So long, my friends—we'll meet again!",
           "en": ""
         }
       ]
@@ -204,7 +259,7 @@
   "narration": {
     "voice_id": "vChnJZ1Cu89g2XXumPfT",
     "model_id": "eleven_multilingual_v2",
-    "text": "This video was generated with A.I. The song and this narration were created with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!"
+    "text": "This video was generated with A.I. The song was created with Suno, this narration with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!"
   },
   "languages": {
     "en": {
@@ -261,20 +316,33 @@
       "native": "الدارجة الجزائرية",
       "good_luck": "ربي يوفقكم!",
       "short": "الدارجة"
+    },
+    "en-SG": {
+      "native": "Singlish",
+      "good_luck": "All the best, lah!",
+      "short": "Singlish"
     }
   },
   "credits": [
     {
+      "name": "Suno",
+      "role": "Song & vocals",
+      "icon": "music"
+    },
+    {
       "name": "ElevenLabs API",
-      "role": "Song, vocals & narration"
+      "role": "Narration & lyric timing",
+      "icon": "mic-vocal"
     },
     {
       "name": "Claude Code",
-      "role": "Lyrics, code & workflow"
+      "role": "Lyrics, code & workflow",
+      "icon": "square-terminal"
     },
     {
       "name": "HyperFrames",
-      "role": "Video composition & rendering"
+      "role": "Video rendering",
+      "icon": "clapperboard"
     }
   ]
 }

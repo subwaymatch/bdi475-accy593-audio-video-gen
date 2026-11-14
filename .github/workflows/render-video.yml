@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       regenerate_audio:
-        description: "Regenerate the song and narration with the ElevenLabs API (uses credits; needs ELEVENLABS_API_KEY secret)"
+        description: "Re-run ElevenLabs lyric alignment and narration (uses credits; needs ELEVENLABS_API_KEY secret)"
         type: boolean
         default: false
       release_tag:
@@ -41,7 +41,7 @@ concurrency:
 env:
   HYPERFRAMES_VERSION: 0.9.47
   HYPERFRAMES_SKIP_SKILLS: "1"
-  OUTPUT: out/semester-around-the-world.mp4
+  OUTPUT: out/good-luck-everyone.mp4
 
 jobs:
   render:
@@ -77,7 +77,7 @@ jobs:
           fi
           npx --yes hyperframes@${HYPERFRAMES_VERSION} doctor || true
 
-      - name: Regenerate song and narration (ElevenLabs)
+      - name: Re-align lyrics and regenerate narration (ElevenLabs)
         if: github.event_name == 'workflow_dispatch' && inputs.regenerate_audio
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
@@ -107,7 +107,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: semester-around-the-world
+          name: good-luck-everyone
           path: |
             ${{ env.OUTPUT }}
             video/assets/song.mp3
@@ -125,5 +125,5 @@ jobs:
           cp video/assets/song.mp3 out/song.mp3
           gh release create "$tag" "$OUTPUT" out/song.mp3 \
             --target "$GITHUB_SHA" \
-            --title "Semester Around the World — BDI 475 · ACCY 593 ($tag)" \
+            --title "Good Luck, Everyone! — BDI 475 · ACCY 593 ($tag)" \
             --notes-file "$RUNNER_TEMP/notes.md"

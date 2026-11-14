@@ -1,79 +1,145 @@
-# Semester Around the World
+# Good Luck, Everyone!
 
 **BDI 475 · ACCY 593**
 
 > **Pronunciation:** "ACCY" is pronounced **"EH-kee"** (/ˈɛki/). "BDI" is spelled out as **B-D-I**.
 
-## Intro (English)
+## Lyrics
 
-Hey hey, BDI 475!\
-ACCY 593, we came alive!\
-What a semester, what a ride!
+```
+What a semester, what a ride,
+BDI four seventy-five, side by side!
+EH-kee five ninety three, we learned and laughed,
 
-## Verse 1
+这学期一起学习，笑声满满在心底，
+课堂点点滴滴，都是珍贵回忆！
+
+함께 공부하며 웃던 날들, 기쁨이 가득했죠,
+가는 길마다 행운이 가득하길, 모두 힘내요!
+
+Cùng học, cùng cười, bao chuyện thật vui,
+Chúc bạn đường xa may mắn, mãi vui!
+
+¡Qué buen semestre, qué gran amistad!
+¡Suerte en lo que viene, con felicidad!
+
+Bonne chance à tous, et bon chemin !
+
+Бірге оқып, бірге күлдік, күндер қандай тамаша,
+Алдағы сапарларың сәтті болсын, достар, әрқашан!
+
+सीखा, हँसे, साथ बिताए दिन,
+आगे की राह में मिलें खुशियाँ हर दिन!
+
+درسنا وضحكنا، يا أحلى صحاب،
+الله يوفقكم في كل الدروب!
+
+Belajar bersama, kenangan indah,
+Semoga berjaya, terus melangkah!
+
+Can lah, we made it—good luck, everyone!
+
+قرينا وضحكنا، صحاب ديما،
+ربي يسهّل طريقكم، بالفرحة والهناء!
+
+Wishing you good luck wherever your journey goes!
+So long, my friends—we'll meet again!
+```
+
+## Translations
 
 **Mandarin**\
-这学期我们一起欢笑\
-*zhè xuéqī wǒmen yìqǐ huānxiào*\
-This semester we laughed together
+这学期一起学习，笑声满满在心底，\
+*zhè xuéqī yìqǐ xuéxí, xiàoshēng mǎnmǎn zài xīndǐ*\
+This semester we studied together, hearts full of laughter
 
 **Mandarin**\
-数据和代码真奇妙\
-*shùjù hé dàimǎ zhēn qímiào*\
-Data and code are so wonderful
-
-**Vietnamese**\
-Cùng nhau học, cùng nhau vui!\
-Learning together, having fun together!
-
-**Spanish (Mexico)**\
-¡Qué padre fue este semestre, compas!\
-What an awesome semester, buddies!
-
-## Verse 2
+课堂点点滴滴，都是珍贵回忆！\
+*kètáng diǎndiǎn dīdī, dōu shì zhēnguì huíyì*\
+Every little moment in class is a precious memory!
 
 **Korean**\
-함께 배운 이 시간, 정말 즐거웠어\
-*hamkke baeun i sigan, jeongmal jeulgeowosseo*\
-The time we learned together was so much fun
+함께 공부하며 웃던 날들, 기쁨이 가득했죠,\
+*hamkke gongbuhamyeo utdeon naldeul, gippeumi gadeukhaetjyo*\
+The days we studied and laughed together were full of joy
+
+**Korean**\
+가는 길마다 행운이 가득하길, 모두 힘내요!\
+*ganeun gilmada haenguni gadeukhagil, modu himnaeyo*\
+May every road you take be full of luck. Keep going, everyone!
+
+**Vietnamese**\
+Cùng học, cùng cười, bao chuyện thật vui,\
+Learning together, laughing together, so many happy moments
+
+**Vietnamese**\
+Chúc bạn đường xa may mắn, mãi vui!\
+Wishing you luck on the long road, and joy always!
+
+**Spanish (Mexico)**\
+¡Qué buen semestre, qué gran amistad!\
+What a great semester, what a great friendship!
+
+**Spanish (Mexico)**\
+¡Suerte en lo que viene, con felicidad!\
+Good luck in what comes next, with happiness!
 
 **French**\
-Merci, les amis !\
-Thank you, friends!
+Bonne chance à tous, et bon chemin !\
+Good luck to all, and safe travels!
 
 **Kazakh**\
-Бірге оқыдық, бірге күлдік!\
-*birge oqydyq, birge küldik*\
-We studied together, we laughed together!
+Бірге оқып, бірге күлдік, күндер қандай тамаша,\
+*birge oqyp, birge küldık, künder qandai tamaşa*\
+We studied together, laughed together, what wonderful days
 
-## Verse 3
+**Kazakh**\
+Алдағы сапарларың сәтті болсын, достар, әрқашан!\
+*aldağy saparlaryñ sättı bolsyn, dostar, ärqaşan*\
+May your journeys ahead always go well, friends!
 
 **Hindi**\
-साथ में सीखा, साथ में गाया\
-*saath mein seekha, saath mein gaaya*\
-We learned together, we sang together
+सीखा, हँसे, साथ बिताए दिन,\
+*seekha, hanse, saath bitaaye din*\
+We learned, we laughed, we spent our days together
+
+**Hindi**\
+आगे की राह में मिलें खुशियाँ हर दिन!\
+*aage ki raah mein milen khushiyaan har din*\
+May you find joy every day on the road ahead!
 
 **Arabic (Saudi)**\
-والله كان ترم حلو مرة\
-*wallah kān term ḥelw marra*\
-I swear, it was a really sweet semester
+درسنا وضحكنا، يا أحلى صحاب،\
+*darasna w ḍiḥikna, ya aḥla ṣḥāb*\
+We studied and laughed, my dearest friends
+
+**Arabic (Saudi)**\
+الله يوفقكم في كل الدروب!\
+*Allah ywaffigkum fi kull ad-drūb*\
+May God grant you success on every path!
 
 **Malay**\
-Semoga berjaya, kawan!\
-Good luck, friends!
+Belajar bersama, kenangan indah,\
+Learning together, beautiful memories
+
+**Malay**\
+Semoga berjaya, terus melangkah!\
+Wishing you success, keep moving forward!
+
+**Singapore English**\
+Can lah, we made it—good luck, everyone!\
+Yes we can, we made it! Good luck, everyone!
 
 **Algerian Arabic**\
-بالتوفيق يا لحباب!\
-*bettawfiq ya lahbab*\
-Good luck, dear friends!
+قرينا وضحكنا، صحاب ديما،\
+*qrina w ḍḥakna, ṣḥāb dīma*\
+We studied and laughed, friends forever
 
-## Outro (English)
-
-So here's to you on the road ahead,\
-Good luck on every journey, every step!\
-BDI 475, ACCY 593,\
-Keep shining bright, wherever you'll be!
+**Algerian Arabic**\
+ربي يسهّل طريقكم، بالفرحة والهناء!\
+*rabbi ysahhel ṭrigkum, bel-farḥa wel-hna*\
+May God ease your path, with joy and peace!
 
 ## Closing narration
 
-This video was generated with A.I. The song and this narration were created with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!
+This video was generated with A.I. The song was created with Suno, this narration with the ElevenLabs API, the code was written by Claude Code, and the video was rendered with HyperFrames. Congratulations, and good luck on your journeys ahead!

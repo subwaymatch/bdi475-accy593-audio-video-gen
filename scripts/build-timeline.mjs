@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Turns lyrics.json + the ElevenLabs timestamp responses into video/timeline.js,
+// Turns lyrics.json + the ElevenLabs Forced Alignment of the song (and the narration's TTS
+// timestamps) into video/timeline.js,
 // the data the HyperFrames composition animates from (lines, words, beats, narration).
 //
 // Usage: node scripts/build-timeline.mjs
@@ -14,7 +15,7 @@ const read = async (p) => JSON.parse(await readFile(path.join(ROOT, p), "utf8"))
 const r3 = (x) => Math.round(x * 1000) / 1000;
 
 const lyrics = await read("song/lyrics.json");
-const song = await read("song/song-response.json");
+const align = await read("song/song-alignment.json");
 const narr = await read("song/narration-response.json");
 
 function probeDuration(file) {
@@ -54,44 +55,67 @@ function detectBeats(file) {
   return null;
 }
 
-const norm = (s) => s.normalize("NFC").replace(/[\s\p{P}]/gu, "").toLowerCase();
-const tokens = (s) => s.trim().split(/\s+/).filter(Boolean);
+const tokens = (s) => s.trim().split(/\s+|(?<=—)/).filter(Boolean);
 const isCJK = (s) => /[㐀-鿿]/.test(s);
 
-// ---- Align lyric lines to the song's word timestamps -------------------------------
-const apiWords = song.words_timestamps.map((w) => ({ w: w.word, s: w.start_ms / 1000, e: w.end_ms / 1000 }));
+// ---- Align lyric lines to the song's forced-alignment character timings ------------
+// Compare on letters/marks/digits only (NFD, lower-cased), so punctuation, spacing and
+// accent encoding differences between the lyrics and the aligner output don't matter.
+const KEYCHAR = /[\p{L}\p{M}\p{N}]/u;
+const keyOf = (str) => [...str.normalize("NFD").toLowerCase()].filter((c) => KEYCHAR.test(c));
+const stream = [];
+for (const c of align.characters) for (const k of keyOf(c.text)) stream.push({ k, s: c.start, e: c.end });
 let cursor = 0;
-const lines = [];
-const sections = [];
-let secStart = 0;
-lyrics.sections.forEach((sec, si) => {
-  sections.push({ name: sec.name, start: r3(secStart), end: r3(secStart + sec.duration_ms / 1000) });
-  secStart += sec.duration_ms / 1000;
-  for (const line of sec.lines) {
-    const sung = tokens(line.text);
-    const got = apiWords.slice(cursor, cursor + sung.length);
-    if (got.length !== sung.length || norm(got.map((g) => g.w).join("")) !== norm(sung.join(""))) {
-      throw new Error(`Timestamp mismatch for "${line.text}" — got "${got.map((g) => g.w).join(" ")}"`);
-    }
-    cursor += sung.length;
+function take(tokenText) {
+  let s = Infinity, e = -Infinity;
+  for (const k of keyOf(tokenText)) {
+    const c = stream[cursor];
+    if (!c || c.k !== k) throw new Error(`Alignment mismatch in "${tokenText}": expected "${k}", got "${c?.k}"`);
+    s = Math.min(s, c.s);
+    e = Math.max(e, c.e);
+    cursor++;
+  }
+  return { s, e };
+}
+// Sung tokens: words for spaced scripts; single characters for Chinese (punctuation stays
+// attached to the character before it).
+// Punctuation-only tokens (e.g. French " !") are attached to the token before them.
+function sungTokens(text) {
+  const parts = isCJK(text) ? [...text.replace(/\s+/g, "")] : tokens(text);
+  const out = [];
+  for (const p of parts) {
+    if (keyOf(p).length || !out.length) out.push(p);
+    else out[out.length - 1] += isCJK(text) ? p : ` ${p}`;
+  }
+  return out;
+}
 
-    // Words shown on screen: the display text if given (e.g. "BDI 475"), else the sung text.
-    const shown = tokens(line.display || line.text);
+const lines = [];
+lyrics.sections.forEach((sec, si) => {
+  for (const line of sec.lines) {
+    const sung = sungTokens(line.text);
+    const times = sung.map(take);
+    // Words shown on screen: the display text if given (e.g. "BDI 475" for "BDI four
+    // seventy-five"); display_groups says how many sung tokens each shown token covers.
+    const shown = line.display ? tokens(line.display) : sung;
+    const groups = line.display_groups || (shown.length === sung.length ? shown.map(() => 1) : null);
     let words;
-    if (shown.length === got.length) {
-      words = shown.map((t, i) => ({ t, s: got[i].s, e: Math.max(got[i].e, got[i].s + 0.12) }));
+    if (groups) {
+      if (groups.reduce((a, b) => a + b, 0) !== sung.length) throw new Error(`display_groups don't cover "${line.text}"`);
+      let k = 0;
+      words = shown.map((t, i) => {
+        const w = { t, s: times[k].s, e: times[k + groups[i] - 1].e };
+        k += groups[i];
+        return w;
+      });
     } else {
-      const s0 = got[0].s, e0 = got.at(-1).e;
+      const s0 = times[0].s, e0 = times.at(-1).e;
       words = shown.map((t, i) => ({ t, s: s0 + ((e0 - s0) * i) / shown.length, e: s0 + ((e0 - s0) * (i + 1)) / shown.length }));
     }
-    // Chinese has no spaces: split each token into characters spread over its span.
-    if (isCJK(line.text)) {
-      words = words.flatMap((w) => {
-        const chars = [...w.t];
-        const d = (w.e - w.s) / chars.length;
-        return chars.map((c, i) => ({ t: c, s: w.s + d * i, e: w.s + d * (i + 1) }));
-      });
-    }
+    words.forEach((w, i) => {
+      if (i > 0) w.s = Math.max(w.s, words[i - 1].s + 0.03);
+      w.e = Math.max(w.e, w.s + 0.12);
+    });
     lines.push({
       id: `l${lines.length}`,
       section: si,
@@ -108,7 +132,11 @@ lyrics.sections.forEach((sec, si) => {
     });
   }
 });
-if (cursor !== apiWords.length) console.warn(`warning: ${apiWords.length - cursor} unmatched trailing words`);
+if (cursor !== stream.length) console.warn(`warning: ${stream.length - cursor} aligned characters left unmatched`);
+const sections = lyrics.sections.map((sec, si) => {
+  const ls = lines.filter((l) => l.section === si);
+  return { name: sec.name, start: ls[0].start, end: ls.at(-1).end };
+});
 
 // ---- Narration words from character alignment ------------------------------------
 const al = narr.alignment;
