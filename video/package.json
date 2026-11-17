@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx --yes hyperframes@0.9.47 preview",
     "check": "npx --yes hyperframes@0.9.47 check",
-    "render": "npx --yes hyperframes@0.9.47 render -o ../out/good-luck-everyone.mp4"
+    "render": "npx --yes hyperframes@0.9.47 render -o ../out/good-luck-everyone-1080p.mp4",
+    "render:4k": "npx --yes hyperframes@0.9.47 render --resolution 4k -o ../out/good-luck-everyone-4k.mp4"
   }
 }
