@@ -14,9 +14,18 @@ Hindi, Saudi Arabic, Malay, Singapore English and Algerian Arabic.
 
 ## Get the video
 
-Every push to `main` that touches the video runs the **Render video** workflow. The workflow
-publishes the MP4 as a [GitHub Release](../../releases). Pull requests get the MP4 as a
-workflow artifact. You can also start a render from **Actions → Render video → Run workflow**.
+Every push to `main` that touches the video runs the **Render video** workflow. It renders the
+video in **4K (3840×2160)** and **1080p** in parallel and publishes both MP4s, plus the song, as a
+[GitHub Release](../../releases). Pull requests render 1080p only, as a quick check, and attach it
+to the workflow run as an artifact.
+
+To publish a new release without changing any files, go to **Actions → Render video → Run
+workflow**, keep the branch on `main`, and optionally enter a release tag. If you have the
+[GitHub CLI](https://cli.github.com), this does the same:
+
+```bash
+gh workflow run render-video.yml --ref main
+```
 
 ## How it works
 
@@ -68,7 +77,14 @@ node scripts/build-timeline.mjs
 ```
 
 ```bash
-cd video && npx --yes hyperframes@0.9.47 render -o ../out/good-luck-everyone.mp4
+cd video && npx --yes hyperframes@0.9.47 render -o ../out/good-luck-everyone-1080p.mp4
+```
+
+For 4K, add `--resolution 4k`. It renders the same composition at 2× device pixel ratio, so
+text stays sharp, and takes several times longer than 1080p:
+
+```bash
+cd video && npx --yes hyperframes@0.9.47 render --resolution 4k -o ../out/good-luck-everyone-4k.mp4
 ```
 
 Preview in the browser with `cd video && npx hyperframes preview`.

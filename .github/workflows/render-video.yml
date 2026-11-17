@@ -1,8 +1,9 @@
 name: Render video
 
-# Renders the HyperFrames composition in video/ to MP4.
-# - Pull requests: render and upload the MP4 as a workflow artifact (no release).
-# - Pushes to main / manual runs: render and publish the MP4 as a GitHub Release.
+# Renders the HyperFrames composition in video/ to MP4 in 1080p and 4K.
+# - Pull requests: render 1080p only (a quick check) and upload it as a workflow artifact.
+# - Pushes to main / manual runs: render 1080p and 4K in parallel and publish both, plus the
+#   song, as one GitHub Release.
 # - Manual runs can also re-run the ElevenLabs lyric alignment of the song
 #   (needs the ELEVENLABS_API_KEY repository secret).
 
@@ -41,12 +42,13 @@ concurrency:
 env:
   HYPERFRAMES_VERSION: 0.9.47
   HYPERFRAMES_SKIP_SKILLS: "1"
-  OUTPUT: out/good-luck-everyone.mp4
+  BASENAME: good-luck-everyone
 
 jobs:
-  render:
+  # Builds the caption timeline once, so every resolution renders the exact same composition.
+  prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -62,20 +64,6 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-          ffmpeg -version | head -1
-
-      - name: Install headless Chrome for HyperFrames
-        run: |
-          npx --yes hyperframes@${HYPERFRAMES_VERSION} telemetry disable || true
-          line=$(npx --yes @puppeteer/browsers install chrome-headless-shell@stable --path "$RUNNER_TEMP/browsers" | tail -1)
-          bin="${line#* }"
-          if [ -x "$bin" ]; then
-            echo "HYPERFRAMES_BROWSER_PATH=$bin" >> "$GITHUB_ENV"
-            echo "Using $bin"
-          else
-            echo "chrome-headless-shell not found, falling back to system Chrome"
-          fi
-          npx --yes hyperframes@${HYPERFRAMES_VERSION} doctor || true
 
       - name: Re-align lyrics (ElevenLabs)
         if: github.event_name == 'workflow_dispatch' && inputs.regenerate_audio
@@ -95,34 +83,116 @@ jobs:
 
       - name: Lint composition
         working-directory: video
-        run: npx --yes hyperframes@${HYPERFRAMES_VERSION} lint
-
-      - name: Render MP4
-        working-directory: video
         run: |
-          mkdir -p ../out
-          npx --yes hyperframes@${HYPERFRAMES_VERSION} render -o "../${OUTPUT}" --workers 4
-          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of compact "../${OUTPUT}"
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} telemetry disable || true
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} lint
 
-      - name: Upload artifact
+      - name: Upload composition
         uses: actions/upload-artifact@v4
         with:
-          name: good-luck-everyone
-          path: |
-            ${{ env.OUTPUT }}
-            video/assets/song.mp3
+          name: composition
+          path: video/
+          include-hidden-files: false
           if-no-files-found: error
 
+  render:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        # Pull requests render 1080p only; releases render 1080p and 4K in parallel.
+        include: ${{ fromJSON(github.event_name == 'pull_request'
+          && '[{"name":"1080p","args":""}]'
+          || '[{"name":"1080p","args":""},{"name":"4k","args":"--resolution 4k"}]') }}
+    name: render (${{ matrix.name }})
+    steps:
+      - name: Download composition
+        uses: actions/download-artifact@v4
+        with:
+          name: composition
+          path: video
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg -version | head -1
+
+      - name: Install headless Chrome for HyperFrames
+        run: |
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} telemetry disable || true
+          line=$(npx --yes @puppeteer/browsers install chrome-headless-shell@stable --path "$RUNNER_TEMP/browsers" | tail -1)
+          bin="${line#* }"
+          if [ -x "$bin" ]; then
+            echo "HYPERFRAMES_BROWSER_PATH=$bin" >> "$GITHUB_ENV"
+            echo "Using $bin"
+          else
+            echo "chrome-headless-shell not found, falling back to system Chrome"
+          fi
+
+      - name: Render MP4 (${{ matrix.name }})
+        working-directory: video
+        run: |
+          out="../out/${BASENAME}-${{ matrix.name }}.mp4"
+          mkdir -p ../out
+          # --resolution 4k renders the same 1920x1080 composition at 2x device pixel ratio,
+          # so text and shapes are drawn natively at 3840x2160 (not upscaled).
+          npx --yes hyperframes@${HYPERFRAMES_VERSION} render ${{ matrix.args }} -o "$out" --workers 4
+          ffprobe -v error -show_entries format=duration,size:stream=codec_name,width,height -of compact "$out"
+
+      - name: Upload ${{ matrix.name }} MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BASENAME }}-${{ matrix.name }}
+          path: out/${{ env.BASENAME }}-${{ matrix.name }}.mp4
+          compression-level: 0
+          if-no-files-found: error
+
+  release:
+    if: github.event_name != 'pull_request'
+    needs: render
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download renders
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ env.BASENAME }}-*
+          path: out
+          merge-multiple: true
+
+      - name: Download composition (for the song file)
+        uses: actions/download-artifact@v4
+        with:
+          name: composition
+          path: composition
+
       - name: Publish release
-        if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           INPUT_TAG: ${{ inputs.release_tag }}
         run: |
+          ls -la out
           tag="${INPUT_TAG:-video-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}}"
-          node scripts/release-notes.mjs > "$RUNNER_TEMP/notes.md"
-          cp video/assets/song.mp3 out/song.mp3
-          gh release create "$tag" "$OUTPUT" out/song.mp3 \
+          {
+            echo "**Downloads:** \`${BASENAME}-4k.mp4\` (3840×2160) · \`${BASENAME}-1080p.mp4\` (1920×1080) · \`song.mp3\`"
+            echo
+            node scripts/release-notes.mjs
+          } > "$RUNNER_TEMP/notes.md"
+          cp composition/assets/song.mp3 out/song.mp3
+          gh release create "$tag" out/${BASENAME}-4k.mp4 out/${BASENAME}-1080p.mp4 out/song.mp3 \
             --target "$GITHUB_SHA" \
             --title "Good Luck, Everyone! — BDI 475 · ACCY 593 ($tag)" \
             --notes-file "$RUNNER_TEMP/notes.md"
